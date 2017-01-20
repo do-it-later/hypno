@@ -26,19 +26,19 @@ public class Player : MonoBehaviour
 	{
 		Debug.Log(cim.GetLeftTrigger());
 		direction = new Vector2 (0, 0);
-		if(Input.GetKeyDown(KeyCode.W))
+		if(Input.GetKey(KeyCode.W))
 		{
 			direction.y += 1;
 		}
-		if(Input.GetKeyDown(KeyCode.S))
+		if(Input.GetKey(KeyCode.S))
 		{
 			direction.y -= 1;
 		}
-		if(Input.GetKeyDown(KeyCode.A))
+		if(Input.GetKey(KeyCode.A))
 		{
 			direction.x -= 1;
 		}
-		if(Input.GetKeyDown(KeyCode.D))
+		if(Input.GetKey(KeyCode.D))
 		{
 			direction.x += 1;
 		}
@@ -53,6 +53,14 @@ public class Player : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.E))
 		{
 			Shoot();
+		}
+	}
+
+	void OnCollisionEnter2D(Collision collision)
+	{
+		if(collision.gameObject.tag == "Hole")
+		{
+			Debug.Log("Dead");
 		}
 	}
 
