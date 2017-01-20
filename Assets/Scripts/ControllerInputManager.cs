@@ -56,6 +56,15 @@ public class ControllerInputManager : MonoBehaviour {
         return angle;
     }
 
+	public bool IsLeftStickIdle() 
+	{
+		float horiz = Input.GetAxis("P" + _controller.ToString() + "_LeftX");
+		// Multiply by -1 to have the positive angle going upwards
+		float vert = Input.GetAxis("P" + _controller.ToString() + "_LeftY") * -1;
+
+		return horiz == 0 && vert == 0;
+	}
+
 	public float GetRightAngle()
 	{
 		float horiz = Input.GetAxis("P" + _controller.ToString() + "_RightX_" + osString);
@@ -68,6 +77,15 @@ public class ControllerInputManager : MonoBehaviour {
 			angle += 360;
 
 		return angle;
+	}
+
+	public bool IsRightStickIdle() 
+	{
+		float horiz = Input.GetAxis("P" + _controller.ToString() + "_RightX_" + osString);
+		// Multiply by -1 to have the positive angle going upwards
+		float vert = Input.GetAxis("P" + _controller.ToString() + "_RightY_" + osString) * -1;
+
+		return horiz == 0 && vert == 0;
 	}
 
 	public Vector2 GetLeftDirections()

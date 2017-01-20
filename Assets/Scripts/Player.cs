@@ -24,7 +24,9 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		Debug.Log(cim.GetLeftTrigger());
+		if(!cim.IsRightStickIdle())
+			transform.eulerAngles = new Vector3(0, 0, cim.GetRightAngle());
+
 		direction = new Vector2 (0, 0);
 		if(Input.GetKey(KeyCode.W))
 		{
@@ -91,10 +93,9 @@ public class Player : MonoBehaviour
 
 	private void Shoot()
 	{
-		if(direction.x != 0 || direction.y != 0)
-		{
-			GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
-			bullet.GetComponent<Bullet>().direction = direction.normalized;
-		}
+		GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
+		var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
+		var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
+		bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
 	}
 }
