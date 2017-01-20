@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Input : MonoBehaviour {
+public class ControllerInputManager : MonoBehaviour {
 
 	[SerializeField]
 	private int _controller = 1;
