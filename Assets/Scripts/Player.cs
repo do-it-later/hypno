@@ -56,10 +56,11 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	void OnCollisionEnter2D(Collision collision)
+	void OnTriggerEnter2D(Collider2D collider)
 	{
-		if(collision.gameObject.tag == "Hole")
+		if(collider.tag == "Hole")
 		{
+			Destroy(gameObject);
 			Debug.Log("Dead");
 		}
 	}
