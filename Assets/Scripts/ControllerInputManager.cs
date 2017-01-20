@@ -14,7 +14,9 @@ public class ControllerInputManager : MonoBehaviour {
 		X = 2,
 		Y = 3,
 		SELECT = 6,
-		START = 7
+		START = 7,
+		LB = 4,
+		RB = 5,
     }
 
 	private string osString = "Win";
@@ -27,6 +29,8 @@ public class ControllerInputManager : MonoBehaviour {
 		Y = 19,
 		SELECT = 10,
 		START = 9,
+		LB = 13,
+		RB = 14,
     }
 
 	private string osString = "Mac";
