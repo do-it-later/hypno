@@ -15,8 +15,17 @@ public class Player : MonoBehaviour
 	private float dodgeCooldown;
 	private float lastDodgeTime;
 
+	private ControllerInputManager cim;
+
+	void Start()
+	{
+		cim = GetComponent<ControllerInputManager>();
+	}
+
 	void Update()
 	{
+		Debug.Log(cim.GetLeftTrigger());
+		direction = new Vector2 (0, 0);
 		if(Input.GetKeyDown(KeyCode.W))
 		{
 			direction.y += 1;
@@ -32,23 +41,6 @@ public class Player : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.D))
 		{
 			direction.x += 1;
-		}
-
-		if(Input.GetKeyUp(KeyCode.W))
-		{
-			direction.y -= 1;
-		}
-		if(Input.GetKeyUp(KeyCode.S))
-		{
-			direction.y += 1;
-		}
-		if(Input.GetKeyUp(KeyCode.A))
-		{
-			direction.x += 1;
-		}
-		if(Input.GetKeyUp(KeyCode.D))
-		{
-			direction.x -= 1;
 		}
 
 		Move();
