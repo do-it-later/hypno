@@ -352,9 +352,9 @@ MonoBehaviour:
   normalShotPower: 1
   normalShotEnergy: 10
   baseDamage: 16
-  initialReflectorCost: 0
-  reflectorMaintenanceCost: 0
-  minimumReflectorEnergyReq: 0
+  initialReflectorCost: 15
+  reflectorMaintenanceCost: 30
+  minimumReflectorEnergyReq: 30
   playerDirectionSprites:
   - {fileID: 21300000, guid: 57be84c1c75834a9ba7297025eb89580, type: 3}
   - {fileID: 21300000, guid: 62ae011b5546146de803091d44c2c8e6, type: 3}
@@ -2512,9 +2512,9 @@ MonoBehaviour:
   normalShotPower: 1
   normalShotEnergy: 10
   baseDamage: 16
-  initialReflectorCost: 0
-  reflectorMaintenanceCost: 0
-  minimumReflectorEnergyReq: 0
+  initialReflectorCost: 15
+  reflectorMaintenanceCost: 30
+  minimumReflectorEnergyReq: 30
   playerDirectionSprites:
   - {fileID: 21300000, guid: 57be84c1c75834a9ba7297025eb89580, type: 3}
   - {fileID: 21300000, guid: 62ae011b5546146de803091d44c2c8e6, type: 3}
