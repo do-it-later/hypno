@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
 	private float passiveEnergyPerSec;
 	[SerializeField]
 	private float chargeEnergyPerSec;
+	[SerializeField]
+	private float timeBeforeEnergyCharge;
 
 	[SerializeField, HeaderAttribute("Resistance")]
 	private float maximumResistance = 100;
@@ -64,8 +66,10 @@ public class Player : MonoBehaviour
 	private int damage;
 	private float lastShotTime = 0;
 	private float lastChargeShotTime = 0;
+	private float energyChargeStartTime = 0;
 
 	private ControllerInputManager cim;
+	private float shootAngle;
 
 	void Start()
 	{
@@ -87,7 +91,7 @@ public class Player : MonoBehaviour
 
 		if (!cim.IsRightStickIdle ())
 		{
-			transform.eulerAngles = new Vector3(0, 0, cim.GetRightAngle());
+			shootAngle = cim.GetRightAngle();
 		}
 
 		if(isPossessed)
@@ -107,6 +111,9 @@ public class Player : MonoBehaviour
 			{
 				ShootCharged();
 			}
+
+			if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
+				energyChargeStartTime = Time.time;
 
 			if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)))
 			{
@@ -162,8 +169,8 @@ public class Player : MonoBehaviour
 		if(energy >= normalShotEnergy)
 		{
 			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
-			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
-			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
+			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
+			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
 			var shot = go.GetComponent<Shot>();
 			shot.direction = new Vector2(x, y).normalized;
 			shot.shotPower = normalShotPower;
@@ -182,8 +189,8 @@ public class Player : MonoBehaviour
 		if(energy >= chargeShotEnergy)
 		{
 			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
-			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
-			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
+			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
+			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
 			var shot = go.GetComponent<Shot>();
 			shot.direction = new Vector2(x, y).normalized;
 			shot.shotPower = chargeShotPower;
@@ -196,7 +203,7 @@ public class Player : MonoBehaviour
 
 	public void ReduceResistance(int power)
 	{
-		resistance -= power * 10;
+		resistance -= power * damage;
 
 		if(resistance <= 0)
 		{
@@ -217,6 +224,9 @@ public class Player : MonoBehaviour
 
 	private void ChargeEnergy(float amount)
 	{
+		if(Time.time - energyChargeStartTime < timeBeforeEnergyCharge)
+			return;
+
 		energy += Time.deltaTime * amount;
 
 		if(energy > maximumEnergy)

@@ -70,7 +70,7 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   shotPower: 0
   target: {fileID: 0}
-  movementSpeed: 10
+  movementSpeed: 30
 --- !u!212 &212802626524095542
 SpriteRenderer:
   m_ObjectHideFlags: 1
