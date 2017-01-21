@@ -127,6 +127,11 @@ MonoBehaviour:
   movementSpeed: 5
   dodgeDistance: 3
   dodgeCooldown: 1
+  normalShotEnergy: 5
+  chargeShotEnergy: 20
+  chargeShotPower: 2
+  energyPerSec: 10
+  shotCooldown: 0.5
 --- !u!212 &7331052
 SpriteRenderer:
   m_ObjectHideFlags: 0

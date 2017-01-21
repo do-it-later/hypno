@@ -14,6 +14,16 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private float dodgeCooldown;
 	private float lastDodgeTime;
+	[SerializeField]
+	private int normalShotEnergy;
+	[SerializeField]
+	private int chargeShotEnergy;
+	[SerializeField]
+	private int chargeShotPower;
+	[SerializeField]
+	private float energyPerSec;
+	private bool chargingEnergy;
+	private float energy;
 
 	[SerializeField]
 	private float shotCooldown;
@@ -23,6 +33,9 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
+		energy = 100;
+		chargingEnergy = false;
+
 		cim = GetComponent<ControllerInputManager>();
 	}
 
@@ -52,8 +65,6 @@ public class Player : MonoBehaviour
 			direction.x += 1;
 		}
 
-		Move();
-
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
 			Dodge();
@@ -62,6 +73,25 @@ public class Player : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.E) || cim.GetRightTrigger() > 0)
 		{
 			Shoot();
+		}
+
+		if(Input.GetKeyDown(KeyCode.Q))
+		{
+			chargingEnergy = true;
+		}
+		else if(Input.GetKeyUp(KeyCode.Q))
+		{
+			chargingEnergy = false;
+		}
+
+		if(chargingEnergy)
+		{
+			ChargeEnergy();
+
+		}
+		else
+		{
+			Move();
 		}
 	}
 
@@ -102,11 +132,39 @@ public class Player : MonoBehaviour
 	{
 		if(Time.time - lastShotTime < shotCooldown)
 			return;
-		
-		GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
-		var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
-		var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
-		bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
-		lastShotTime = Time.time;
+
+		if(energy > normalShotEnergy)
+		{
+			GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
+			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
+			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
+			bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
+
+			energy -= normalShotEnergy;
+		}
+	}
+
+	private void ShootCharged()
+	{
+		if(energy > chargeShotEnergy)
+		{
+			GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
+			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
+			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
+			bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
+			bullet.GetComponent<Bullet>().shotPower = chargeShotPower;
+
+			energy -= chargeShotEnergy;
+		}
+	}
+
+	private void ChargeEnergy()
+	{
+		energy += 1/Time.deltaTime * energyPerSec;
+
+		if(energy > 100)
+		{
+			energy = 100;
+		}
 	}
 }
