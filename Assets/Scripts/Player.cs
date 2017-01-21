@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
 	private float lastShotTime = 0;
 	private float lastChargeShotTime = 0;
 	private float energyChargeStartTime = 0;
+	private bool isCharging;
 
 	private ControllerInputManager cim;
 	private float shootAngle;
@@ -106,26 +107,32 @@ public class Player : MonoBehaviour
 			if(cim.GetRightTrigger() > 0)
 			{
 				Shoot();
+				isCharging = false;
 			}
 			else if(cim.GetLeftTrigger() > 0)
 			{
 				ShootCharged();
+				isCharging = false;
 			}
-
+			
 			if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
+			{
 				energyChargeStartTime = Time.time;
-
-			if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)))
+				isCharging = true;
+			}
+			else if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)) && isCharging)
 			{
 				ChargeEnergy(chargeEnergyPerSec);
 			}
 			else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.RB)))
 			{
 				Dodge();
+				isCharging = false;
 			}
 			else
 			{
 				Move();
+				isCharging = false;
 			}
 		}
 	}
