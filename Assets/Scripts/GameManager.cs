@@ -7,10 +7,14 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager instance = null;
 
-	public AudioClip menuMusic;
-	public AudioClip gameStartMusic;
-	public AudioClip gameBuildupMusic;
-	public AudioClip gameEndingLoopMusic;
+	[SerializeField]
+	private AudioClip menuMusic;
+	[SerializeField]
+	private AudioClip gameStartMusic;
+	[SerializeField]
+	private AudioClip gameBuildupMusic;
+	[SerializeField]
+	private AudioClip gameEndingLoopMusic;
 
 	private bool playingGameLoop;
 
@@ -39,7 +43,7 @@ public class GameManager : MonoBehaviour
 		{
 			SceneManager.LoadScene("Game");
 		}
-		if(currentScene.name == "Game" && !playingGameLoop)
+		if((currentScene.name == "Game" || currentScene.name == "Pat's Scene") && !playingGameLoop)
 		{
 			StartCoroutine(PlayGameMusic());
 			playingGameLoop = true;
