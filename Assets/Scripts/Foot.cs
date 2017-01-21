@@ -8,7 +8,7 @@ public class Foot : MonoBehaviour {
 	{
 		if(col.tag == "Hole")
 		{
-			Destroy(transform.parent.gameObject);
+			transform.parent.gameObject.SetActive(false);
 		}
 	}
 

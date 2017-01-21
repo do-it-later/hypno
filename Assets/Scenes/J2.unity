@@ -1174,27 +1174,27 @@ Prefab:
     - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
       propertyPath: settings.delay
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
       propertyPath: settings.growthSpeed.x
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
       propertyPath: settings.growthSpeed.y
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
       propertyPath: settings.maxSize.x
-      value: 8.4
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
       propertyPath: settings.maxSize.y
-      value: 4.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 61708097828244388, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
         type: 2}
@@ -1331,6 +1331,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1076349444}
+        m_MethodName: UpdateOpacity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: Player+ResistanceChangeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   shotPrefab: {fileID: 1594326054715158, guid: a443d9bc2cec249d39361f6d4c211252, type: 2}
@@ -1352,6 +1363,11 @@ MonoBehaviour:
   chargeShotEnergy: 33
   baseDamage: 10
   playerDirectionSprites: []
+  shotSmallSfx: {fileID: 0}
+  shotLargeSfx: {fileID: 0}
+  gotHitSfx: {fileID: 0}
+  teleportSfx: {fileID: 0}
+  hoverSfx: {fileID: 0}
 --- !u!58 &1076349445
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1812,6 +1828,51 @@ Transform:
   m_Father: {fileID: 1070966350}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1561679303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1561679307}
+  - component: {fileID: 1561679306}
+  m_Layer: 0
+  m_Name: RoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1561679306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561679303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff494ee4c93f4dfc951b22c55b61a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players:
+  - {fileID: 1830146937}
+  - {fileID: 1076349442}
+  cim1: {fileID: 1830146938}
+  cim2: {fileID: 1076349443}
+--- !u!4 &1561679307
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561679303}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1809243470
 GameObject:
   m_ObjectHideFlags: 0
@@ -2009,6 +2070,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1830146939}
+        m_MethodName: UpdateOpacity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: Player+ResistanceChangeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   shotPrefab: {fileID: 1594326054715158, guid: a443d9bc2cec249d39361f6d4c211252, type: 2}
@@ -2030,6 +2102,11 @@ MonoBehaviour:
   chargeShotEnergy: 30
   baseDamage: 20
   playerDirectionSprites: []
+  shotSmallSfx: {fileID: 0}
+  shotLargeSfx: {fileID: 0}
+  gotHitSfx: {fileID: 0}
+  teleportSfx: {fileID: 0}
+  hoverSfx: {fileID: 0}
 --- !u!58 &1830146940
 CircleCollider2D:
   m_ObjectHideFlags: 0

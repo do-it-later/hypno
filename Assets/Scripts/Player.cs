@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
 	private float lastChargeShotTime = 0;
 	private float energyChargeStartTime = 0;
 	private bool isCharging;
+	private Vector3 initialPosition;
 
 	[SerializeField, HeaderAttribute("Images")]
 	private List<Sprite> playerDirectionSprites;
@@ -94,6 +95,7 @@ public class Player : MonoBehaviour
 		resistance = maximumResistance;
 		damage = baseDamage;
 		opponentPlayer = opponent.GetComponent<Player>();
+		initialPosition = transform.position;
 
 		cim = GetComponent<ControllerInputManager>();
 
@@ -352,5 +354,13 @@ public class Player : MonoBehaviour
 	private bool IsMoving()
 	{
 		return !direction.x.Equals(0) || !direction.y.Equals(0);
+	}
+
+	public void RestartCharacter()
+	{
+		gameObject.SetActive(true);
+		transform.position = initialPosition;
+		resistance = maximumResistance;
+		energy = maximumEnergy;
 	}
 }
