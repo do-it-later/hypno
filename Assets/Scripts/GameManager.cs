@@ -35,14 +35,24 @@ public class GameManager : MonoBehaviour
 		playingGameLoop = false;
 	}
 
-	void Update()
-	{
+    public void loadGame()
+    {
 		Scene currentScene = SceneManager.GetActiveScene();
-
-		if(currentScene.name == "Main Menu" && Input.GetKeyDown(KeyCode.Space))
+        if(currentScene.name == "Main Menu" && Input.GetKeyDown(KeyCode.Space))
 		{
 			SceneManager.LoadScene("Game");
 		}
+    }
+
+	void Update()
+	{
+		Scene currentScene = SceneManager.GetActiveScene();
+        if (Input.GetKeyDown(KeyCode.Return) && currentScene.name == "Main Menu")
+        {
+            Debug.Log("Loading main game.");
+            SceneManager.LoadScene("Game");
+        }
+
 		if((currentScene.name == "Game" || currentScene.name == "Pat's Scene") && !playingGameLoop)
 		{
 			StartCoroutine(PlayGameMusic());
