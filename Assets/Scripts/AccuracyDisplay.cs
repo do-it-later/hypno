@@ -10,7 +10,6 @@ public class AccuracyDisplay : MonoBehaviour
 
 	public void UpdateAccuracy(float value)
 	{
-		Debug.Log(value);
 		text.text = "Accuracy: " + value.ToString("P");
 	}
 }

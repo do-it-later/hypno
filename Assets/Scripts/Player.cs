@@ -393,7 +393,6 @@ public class Player : MonoBehaviour
 	public void ShotHit()
 	{
 		shotsHit++;
-		Debug.Log(shotsHit);
 		accuracyChanged.Invoke(shotsHit / (float)shotsFired);
 	}
 }
