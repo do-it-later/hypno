@@ -263,11 +263,25 @@ public class Player : MonoBehaviour
 		if(resistance <= 0)
 		{
 			resistance = 0;
+			// Edge case where you're already possessing then get possessed 
+			if(isPossessingOpponent)
+			{
+				ResetWhenDoublePossessed();
+				opponentPlayer.ResetWhenDoublePossessed();
+			}
 			isPossessed = true;
 			opponentPlayer.IsPossessingOpponent = true;
 		}
 
 		resistanceChanged.Invoke(resistance);
+	}
+
+	public void ResetWhenDoublePossessed()
+	{
+		resistance = 100;
+		damage = Mathf.CeilToInt(damage * 1.5f);
+		isPossessed = false;
+		isPossessingOpponent = false;
 	}
 
 	private void ReduceEnergy(float amount)
