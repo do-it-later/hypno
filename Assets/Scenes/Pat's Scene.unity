@@ -340,6 +340,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dc482bd810b2c4000b582b13dacab0d1, type: 3}
   - {fileID: 21300000, guid: 95cd7963e6bd647c1b12ae3166989aed, type: 3}
   - {fileID: 21300000, guid: 8f024cd7bf438422f8296069899b2ab6, type: 3}
+  shotSmall: {fileID: 8300000, guid: 6ac51733406db4b5f9faa7c625962737, type: 3}
+  shotLarge: {fileID: 8300000, guid: 02f902d0edf4249c2927ba3fa597d9e4, type: 3}
 --- !u!61 &104298969
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1863,6 +1865,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dc482bd810b2c4000b582b13dacab0d1, type: 3}
   - {fileID: 21300000, guid: 95cd7963e6bd647c1b12ae3166989aed, type: 3}
   - {fileID: 21300000, guid: 8f024cd7bf438422f8296069899b2ab6, type: 3}
+  shotSmall: {fileID: 8300000, guid: 6ac51733406db4b5f9faa7c625962737, type: 3}
+  shotLarge: {fileID: 8300000, guid: 02f902d0edf4249c2927ba3fa597d9e4, type: 3}
 --- !u!61 &1684553043
 BoxCollider2D:
   m_ObjectHideFlags: 0
