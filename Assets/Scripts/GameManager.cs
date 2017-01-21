@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 		{
 			SceneManager.LoadScene("Game");
 		}
-		if(currentScene.name == "Game" && !playingGameLoop)
+		if((currentScene.name == "Game" || currentScene.name == "Pat's Scene") && !playingGameLoop)
 		{
 			StartCoroutine(PlayGameMusic());
 			playingGameLoop = true;
