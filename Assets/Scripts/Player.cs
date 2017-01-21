@@ -110,6 +110,8 @@ public class Player : MonoBehaviour
 
 	private Color originalColor;
 
+	private bool gameStart;
+
 	void Start()
 	{
 		energy = maximumEnergy;
@@ -121,116 +123,121 @@ public class Player : MonoBehaviour
 		cim = GetComponent<ControllerInputManager>();
 
 		originalColor = GetComponent<SpriteRenderer>().color;
+
+		gameStart = false;
 	}
 
 	void Update()
 	{
-		ChargeEnergy(passiveEnergyPerSec);
-		direction = cim.GetLeftDirections();
+		if(gameStart)
+		{
+			ChargeEnergy(passiveEnergyPerSec);
+			direction = cim.GetLeftDirections();
 
-		if(isPossessingOpponent)
-			return;
+			if(isPossessingOpponent)
+				return;
 
-		if (!cim.IsLeftStickIdle())
-		{
-			shootAngle = cim.GetLeftAngle();
-		}
-
-		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-		// Face NORTH-EAST
-		if(shootAngle > 22.5 && shootAngle < 67.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[1];
-			spriteRenderer.flipX = false;
-		}
-		// Face NORTH
-		else if(shootAngle > 67.5 && shootAngle < 112.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[0];
-			spriteRenderer.flipX = false;
-		}
-		// Face NORTH-WEST
-		else if(shootAngle > 112.5 && shootAngle < 157.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[1];
-			spriteRenderer.flipX = true;
-		}
-		// Face WEST
-		else if(shootAngle > 157.5 && shootAngle < 202.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[2];
-			spriteRenderer.flipX = true;
-		}
-		// Face SOUTH-WEST
-		else if(shootAngle > 202.5 && shootAngle < 247.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[3];
-			spriteRenderer.flipX = true;
-		}
-		// Face SOUTH
-		else if(shootAngle > 247.5 && shootAngle < 292.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[4];
-			spriteRenderer.flipX = false;
-		}
-		// Face SOUTH-EAST
-		else if(shootAngle > 292.5 && shootAngle < 337.5)
-		{
-			spriteRenderer.sprite = playerDirectionSprites[3];
-			spriteRenderer.flipX = false;
-		}
-		// Face EAST
-		else
-		{
-			spriteRenderer.sprite = playerDirectionSprites[2];
-			spriteRenderer.flipX = false;
-		}
-
-		if(isPossessed)
-		{
-			direction = Vector2.Scale(cim.GetLeftDirections(), new Vector2(possessedControl, possessedControl)) + 
-				Vector2.Scale(opponentPlayer.Direction, new Vector2(1 - possessedControl, 1 - possessedControl));
-			Move();
-			ChargeResistance(30);
-			GetComponent<SpriteRenderer>().color = opponentPlayer.GetComponent<SpriteRenderer>().color;
-		} 
-		else 
-		{
-			GetComponent<SpriteRenderer>().color = originalColor;
-
-			if(cim.GetRightTrigger() > 0)
+			if (!cim.IsLeftStickIdle())
 			{
-				Shoot();
-				isCharging = false;
-				shield.SetActive(false);
+				shootAngle = cim.GetLeftAngle();
 			}
-			else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
+
+			SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+			// Face NORTH-EAST
+			if(shootAngle > 22.5 && shootAngle < 67.5)
 			{
-				energyChargeStartTime = Time.time;
-				isCharging = true;
+				spriteRenderer.sprite = playerDirectionSprites[1];
+				spriteRenderer.flipX = false;
 			}
-			else if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)) && isCharging)
+			// Face NORTH
+			else if(shootAngle > 67.5 && shootAngle < 112.5)
 			{
-				ChargeEnergy(chargeEnergyPerSec);
+				spriteRenderer.sprite = playerDirectionSprites[0];
+				spriteRenderer.flipX = false;
 			}
-			else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.RB)))
+			// Face NORTH-WEST
+			else if(shootAngle > 112.5 && shootAngle < 157.5)
 			{
-				Dodge();
-				isCharging = false;
+				spriteRenderer.sprite = playerDirectionSprites[1];
+				spriteRenderer.flipX = true;
 			}
+			// Face WEST
+			else if(shootAngle > 157.5 && shootAngle < 202.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[2];
+				spriteRenderer.flipX = true;
+			}
+			// Face SOUTH-WEST
+			else if(shootAngle > 202.5 && shootAngle < 247.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[3];
+				spriteRenderer.flipX = true;
+			}
+			// Face SOUTH
+			else if(shootAngle > 247.5 && shootAngle < 292.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[4];
+				spriteRenderer.flipX = false;
+			}
+			// Face SOUTH-EAST
+			else if(shootAngle > 292.5 && shootAngle < 337.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[3];
+				spriteRenderer.flipX = false;
+			}
+			// Face EAST
 			else
 			{
-				if(cim.GetLeftTrigger() > 0)
+				spriteRenderer.sprite = playerDirectionSprites[2];
+				spriteRenderer.flipX = false;
+			}
+
+			if(isPossessed)
+			{
+				direction = Vector2.Scale(cim.GetLeftDirections(), new Vector2(possessedControl, possessedControl)) + 
+					Vector2.Scale(opponentPlayer.Direction, new Vector2(1 - possessedControl, 1 - possessedControl));
+				Move();
+				ChargeResistance(30);
+				GetComponent<SpriteRenderer>().color = opponentPlayer.GetComponent<SpriteRenderer>().color;
+			} 
+			else 
+			{
+				GetComponent<SpriteRenderer>().color = originalColor;
+
+				if(cim.GetRightTrigger() > 0)
 				{
-					ActivateShield();
+					Shoot();
+					isCharging = false;
+					shield.SetActive(false);
+				}
+				else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
+				{
+					energyChargeStartTime = Time.time;
+					isCharging = true;
+				}
+				else if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)) && isCharging)
+				{
+					ChargeEnergy(chargeEnergyPerSec);
+				}
+				else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.RB)))
+				{
+					Dodge();
 					isCharging = false;
 				}
-				else {
-					shield.SetActive(false);
-					isReflectorTriggered = false;
-					isReflectorAllowed = true;
-					Move();
+				else
+				{
+					if(cim.GetLeftTrigger() > 0)
+					{
+						ActivateShield();
+						isCharging = false;
+					}
+					else {
+						shield.SetActive(false);
+						isReflectorTriggered = false;
+						isReflectorAllowed = true;
+						Move();
+					}
 				}
 			}
 		}
@@ -433,6 +440,7 @@ public class Player : MonoBehaviour
 		ModifyAccuracy();
 		resistanceChanged.Invoke(resistance);
 		energyChanged.Invoke(energy);
+		gameStart = false;
 	}
 
 	public void OpponentShotHit()
@@ -444,5 +452,10 @@ public class Player : MonoBehaviour
 	{
 		shotsHit++;
 		ModifyAccuracy();
+	}
+
+	public void StartGame()
+	{
+		gameStart = true;
 	}
 }
