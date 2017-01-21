@@ -37,9 +37,9 @@ public class GameManager : MonoBehaviour
 
 		if(currentScene.name == "Main Menu" && Input.GetKeyDown(KeyCode.Space))
 		{
-			SceneManager.LoadScene("Pat's Other Scene");
+			SceneManager.LoadScene("Game");
 		}
-		if(currentScene.name == "Pat's Other Scene" && !playingGameLoop)
+		if(currentScene.name == "Game" && !playingGameLoop)
 		{
 			StartCoroutine(PlayGameMusic());
 			playingGameLoop = true;
