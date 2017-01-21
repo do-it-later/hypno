@@ -14,8 +14,8 @@ public class Level : MonoBehaviour
 	private void CreateHole(Vector2 position)
 	{
 		HoleSettings settings = new HoleSettings();
-		settings.delay = 1.0f;
-		settings.growthSpeed = new Vector2(0.35f, 0.25f);
+		settings.delay = 12.0f;
+		settings.growthSpeed = new Vector2(0.35f, 0.2f);
 		settings.maxSize = new Vector2(24, 11);
 
 		GameObject hole = Instantiate(holePrefab, position, Quaternion.identity);

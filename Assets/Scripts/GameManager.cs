@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
 	public AudioClip gameStartMusic;
 	public AudioClip gameBuildupMusic;
 	public AudioClip gameEndingLoopMusic;
+
+	private bool playingGameLoop;
 
 	void Awake()
 	{
@@ -24,13 +27,22 @@ public class GameManager : MonoBehaviour
 	void Start()
 	{
 		SoundManager.instance.PlayLoopedMusic(menuMusic);
+
+		playingGameLoop = false;
 	}
 
 	void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.P))
+		Scene currentScene = SceneManager.GetActiveScene();
+
+		if(currentScene.name == "Main Menu" && Input.GetKeyDown(KeyCode.Space))
+		{
+			SceneManager.LoadScene("Pat's Other Scene");
+		}
+		if(currentScene.name == "Pat's Other Scene" && !playingGameLoop)
 		{
 			StartCoroutine(PlayGameMusic());
+			playingGameLoop = true;
 		}
 	}
 
