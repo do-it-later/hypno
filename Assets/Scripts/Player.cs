@@ -10,11 +10,15 @@ public class Player : MonoBehaviour
 	public class EnergyChangeEvent : UnityEvent<float> { }
 	[Serializable]
 	public class ResistanceChangeEvent : UnityEvent<float> { }
+	[Serializable]
+	public class AccuracyChangeEvent : UnityEvent<float> { }
 
 	[SerializeField]
 	private EnergyChangeEvent energyChanged = new EnergyChangeEvent();
 	[SerializeField]
 	private ResistanceChangeEvent resistanceChanged = new ResistanceChangeEvent();
+	[SerializeField]
+	private AccuracyChangeEvent accuracyChanged = new AccuracyChangeEvent();
 	public GameObject shotPrefab;
 
 	[SerializeField]
@@ -69,6 +73,8 @@ public class Player : MonoBehaviour
 	private float energyChargeStartTime = 0;
 	private bool isCharging;
 	private Vector3 initialPosition;
+	private int shotsFired;
+	private int shotsHit;
 
 	[SerializeField, HeaderAttribute("Images")]
 	private List<Sprite> playerDirectionSprites;
@@ -258,6 +264,8 @@ public class Player : MonoBehaviour
 
 			ReduceEnergy(normalShotEnergy);
 			lastShotTime = Time.time;
+			shotsFired++;
+			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
 		}
 	}
 
@@ -281,6 +289,8 @@ public class Player : MonoBehaviour
 
 			ReduceEnergy(chargeShotEnergy);
 			lastChargeShotTime = Time.time;
+			shotsFired++;
+			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
 		}
 	}
 
@@ -362,5 +372,21 @@ public class Player : MonoBehaviour
 		transform.position = initialPosition;
 		resistance = maximumResistance;
 		energy = maximumEnergy;
+		damage = baseDamage;
+		shotsHit = 0;
+		shotsFired = 0;
+		accuracyChanged.Invoke(0);
+	}
+
+	public void OpponentShotHit()
+	{
+		opponentPlayer.ShotHit();
+	}
+
+	public void ShotHit()
+	{
+		shotsHit++;
+		Debug.Log(shotsHit);
+		accuracyChanged.Invoke(shotsHit / (float)shotsFired);
 	}
 }

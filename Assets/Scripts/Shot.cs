@@ -59,7 +59,7 @@ public class Shot : MonoBehaviour
 		{
 			var player = collider.GetComponent<Player>();
 			player.ReduceResistance(shotPower);
-			Debug.Log("hit target");
+			player.OpponentShotHit();
 			Destroy(gameObject);
 		}
 	}
