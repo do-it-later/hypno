@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
+  shotPower: 0
   movementSpeed: 10
   range: 10
 --- !u!212 &212802626524095542

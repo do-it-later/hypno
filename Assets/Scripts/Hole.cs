@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct HoleSettings
+{
+	public float delay;
+	public Vector2 growthSpeed;
+	public Vector2 maxSize;
+}
+
 public class Hole : MonoBehaviour
 {
-	private int delay;
-	private float growthSpeed;
-	private int maxSize;
+	public HoleSettings settings;
 
 	private float creationTime;
 
@@ -19,19 +24,17 @@ public class Hole : MonoBehaviour
 	void Update()
 	{
 		Vector2 scale = this.transform.localScale;
+		float currentTime = Time.time;
 
-		if(Time.time - creationTime > delay && scale.x < maxSize && scale.y < maxSize)
+		if(currentTime - creationTime > settings.delay && scale.x < settings.maxSize.x)
 		{
-			scale.x += growthSpeed * Time.deltaTime;
-			scale.y += growthSpeed * Time.deltaTime;
-			this.transform.localScale = scale;
+			scale.x += settings.growthSpeed.x * Time.deltaTime;
 		}
-	}
+		if(currentTime - creationTime > settings.delay && scale.y < settings.maxSize.y)
+		{
+			scale.y += settings.growthSpeed.y * Time.deltaTime;
+		}
 
-	public void SetHoleValues(int delay, float growthSpeed, int maxSize)
-	{
-		this.delay = delay;
-		this.growthSpeed = growthSpeed;
-		this.maxSize = maxSize;
+		this.transform.localScale = scale;
 	}
 }
