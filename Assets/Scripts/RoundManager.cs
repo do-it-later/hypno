@@ -64,11 +64,6 @@ public class RoundManager : MonoBehaviour {
 				RestartGame();
 			}
 		}
-
-		if(Input.GetKeyDown(KeyCode.R))
-		{
-			RestartGame();
-		}
 	}
 
 	private void RestartGame()
