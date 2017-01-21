@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RoundManager : MonoBehaviour {
 
@@ -18,6 +19,8 @@ public class RoundManager : MonoBehaviour {
 	private ControllerInputManager cim1;
 	[SerializeField]
 	private ControllerInputManager cim2;
+	[SerializeField]
+	private UnityEvent OnRestart = new UnityEvent();
 
 	void Update() {
 		var playersAlive = 0;
@@ -46,7 +49,7 @@ public class RoundManager : MonoBehaviour {
 
 	private void RestartGame()
 	{
-		players.ForEach(p => { p.GetComponent<Player>().RestartCharacter(); });
+		OnRestart.Invoke();
 		state = STATE.PLAYING;
 	}
 }

@@ -39,4 +39,10 @@ public class Hole : MonoBehaviour
 
 		this.transform.localScale = scale;
 	}
+
+	public void RestartHole()
+	{
+		creationTime = Time.time;
+		transform.localScale = new Vector3(0, 0, 1);
+	}
 }

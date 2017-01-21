@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
 	private ResistanceChangeEvent resistanceChanged = new ResistanceChangeEvent();
 	[SerializeField]
 	private AccuracyChangeEvent accuracyChanged = new AccuracyChangeEvent();
-	public GameObject shotPrefab;
+	public GameObject smallShotPrefab;
+	public GameObject longShotPrefab;
 
 	[SerializeField]
 	private GameObject opponent;
@@ -54,6 +55,8 @@ public class Player : MonoBehaviour
 	private float resistance;
 
 	[SerializeField, HeaderAttribute("Shot")]
+	private Color shotColor;
+	[SerializeField]
 	private float shotCooldown;
 	[SerializeField]
 	private float chargeShotCooldown;
@@ -253,7 +256,7 @@ public class Player : MonoBehaviour
 		{
 			SoundManager.instance.PlaySingleSfx(shotSmallSfx);
 
-			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
+			GameObject go = Instantiate(smallShotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
 			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
 			var shot = go.GetComponent<Shot>();
@@ -261,6 +264,7 @@ public class Player : MonoBehaviour
 			shot.shotPower = normalShotPower;
 			shot.target = opponent;
 			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
+			go.GetComponent<SpriteRenderer>().color = shotColor;
 
 			ReduceEnergy(normalShotEnergy);
 			lastShotTime = Time.time;
@@ -278,7 +282,7 @@ public class Player : MonoBehaviour
 		{
 			SoundManager.instance.PlaySingleSfx(shotLargeSfx);
 
-			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
+			GameObject go = Instantiate(longShotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
 			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
 			var shot = go.GetComponent<Shot>();
@@ -286,6 +290,7 @@ public class Player : MonoBehaviour
 			shot.shotPower = chargeShotPower;
 			shot.target = opponent;
 			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
+			go.GetComponent<SpriteRenderer>().color = shotColor;
 
 			ReduceEnergy(chargeShotEnergy);
 			lastChargeShotTime = Time.time;
@@ -376,6 +381,8 @@ public class Player : MonoBehaviour
 		shotsHit = 0;
 		shotsFired = 0;
 		accuracyChanged.Invoke(0);
+		resistanceChanged.Invoke(resistance);
+		energyChanged.Invoke(energy);
 	}
 
 	public void OpponentShotHit()

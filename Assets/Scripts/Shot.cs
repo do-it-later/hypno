@@ -12,14 +12,6 @@ public class Shot : MonoBehaviour
 	[SerializeField]
 	private int movementSpeed;
 
-	void Start()
-	{
-		Vector2 scale = this.transform.localScale;
-		scale.x *= shotPower;
-		scale.y *= shotPower;
-		this.transform.localScale = scale;
-	}
-
 	void Update()
 	{
 		Vector2 position = this.transform.position;

@@ -332,9 +332,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: Player+AccuracyChangeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  shotPrefab: {fileID: 1594326054715158, guid: a443d9bc2cec249d39361f6d4c211252, type: 2}
+  smallShotPrefab: {fileID: 1541816827462002, guid: bc565ff571c1f4493b91428d6cb6147c,
+    type: 2}
+  longShotPrefab: {fileID: 1816993995732200, guid: de2abc8aeb9874f9ea395413d2b8c824,
+    type: 2}
   opponent: {fileID: 1684553040}
-  possessedControl: 0.4
+  possessedControl: 0.43
   movementSpeed: 5
   dodgeDistance: 3
   dodgeCooldown: 1
@@ -343,6 +346,7 @@ MonoBehaviour:
   chargeEnergyPerSec: 75
   timeBeforeEnergyCharge: 0.33
   maximumResistance: 100
+  shotColor: {r: 1, g: 0.30882353, b: 0.30882353, a: 1}
   shotCooldown: 0.33
   chargeShotCooldown: 3
   normalShotPower: 1
@@ -682,6 +686,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873cee609e200408691c3c74f841a63e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &460392666 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
+    type: 2}
+  m_PrefabInternal: {fileID: 1410132982}
+  m_Script: {fileID: 11500000, guid: 70322309d92eb49aeb0a122656a871cb, type: 3}
 --- !u!1 &499545496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,9 +2061,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: Player+AccuracyChangeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  shotPrefab: {fileID: 1594326054715158, guid: a443d9bc2cec249d39361f6d4c211252, type: 2}
+  smallShotPrefab: {fileID: 1541816827462002, guid: bc565ff571c1f4493b91428d6cb6147c,
+    type: 2}
+  longShotPrefab: {fileID: 1816993995732200, guid: de2abc8aeb9874f9ea395413d2b8c824,
+    type: 2}
   opponent: {fileID: 104298966}
-  possessedControl: 0.4
+  possessedControl: 0.43
   movementSpeed: 5
   dodgeDistance: 3
   dodgeCooldown: 1
@@ -2062,6 +2075,7 @@ MonoBehaviour:
   chargeEnergyPerSec: 75
   timeBeforeEnergyCharge: 0.33
   maximumResistance: 100
+  shotColor: {r: 0, g: 0.26090252, b: 0.50689656, a: 1}
   shotCooldown: 0.33
   chargeShotCooldown: 3
   normalShotPower: 1
@@ -2461,6 +2475,44 @@ MonoBehaviour:
   - {fileID: 104298966}
   cim1: {fileID: 1684553041}
   cim2: {fileID: 104298967}
+  OnRestart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1684553042}
+        m_MethodName: RestartCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 104298968}
+        m_MethodName: RestartCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 460392666}
+        m_MethodName: RestartHole
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &1890186322
 Transform:
   m_ObjectHideFlags: 0
