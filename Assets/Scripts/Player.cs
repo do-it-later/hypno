@@ -69,6 +69,9 @@ public class Player : MonoBehaviour
 	private float energyChargeStartTime = 0;
 	private bool isCharging;
 
+	[SerializeField, HeaderAttribute("Images")]
+	private List<Sprite> playerDirectionSprites;
+
 	private ControllerInputManager cim;
 	private float shootAngle;
 
@@ -90,9 +93,61 @@ public class Player : MonoBehaviour
 		if(isPossessingOpponent)
 			return;
 
-		if (!cim.IsRightStickIdle ())
+		if (!cim.IsRightStickIdle())
 		{
 			shootAngle = cim.GetRightAngle();
+
+			float targetAngle = cim.GetRightAngle();
+			SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+			// Face EAST
+			if(targetAngle < 337.5 && targetAngle < 22.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[2];
+				spriteRenderer.flipX = false;
+			}
+			// Face NORTH-EAST
+			if(targetAngle > 22.5 && targetAngle < 67.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[1];
+				spriteRenderer.flipX = false;
+			}
+			// Face NORTH
+			if(targetAngle > 67.5 && targetAngle < 112.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[0];
+				spriteRenderer.flipX = false;
+			}
+			// Face NORTH-WEST
+			if(targetAngle > 112.5 && targetAngle < 157.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[1];
+				spriteRenderer.flipX = true;
+			}
+			// Face WEST
+			if(targetAngle > 157.5 && targetAngle < 202.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[2];
+				spriteRenderer.flipX = true;
+			}
+			// Face SOUTH-WEST
+			if(targetAngle > 202.5 && targetAngle < 247.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[3];
+				spriteRenderer.flipX = true;
+			}
+			// Face SOUTH
+			if(targetAngle > 247.5 && targetAngle < 292.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[4];
+				spriteRenderer.flipX = false;
+			}
+			// Face SOUTH-EAST
+			if(targetAngle > 292.5 && targetAngle < 337.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[3];
+				spriteRenderer.flipX = false;
+			}
 		}
 
 		if(isPossessed)

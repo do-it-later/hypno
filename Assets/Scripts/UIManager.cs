@@ -39,7 +39,8 @@ public class UIManager : MonoBehaviour
     // playerId: 1 to number of players    objectType: HEALTH/CHARGE    percentage: 0-100
     public void updateUIItem(int playerId, UIObject objectType, float percentage)
     {
-        if (playerId-1 < 0 || playerId-1 > 2 || percentage < 0 || percentage > 100)
+        playerId = playerId - 1;
+        if (playerId < 0 || playerId > 2 || percentage < 0 || percentage > 100)
         {
             return;
         }
@@ -47,11 +48,11 @@ public class UIManager : MonoBehaviour
         Image element = null;
         if (objectType == UIObject.HEALTH)
         {
-            element = healthBars[playerId - 1];
+            element = healthBars[playerId];
         }
         else if (objectType == UIObject.CHARGE)
         {
-            element = chargeBars[playerId - 1];
+            element = chargeBars[playerId];
         }
 
         element.rectTransform.localScale = new Vector3(percentage / 100, element.rectTransform.localScale.y, element.rectTransform.localScale.z);
