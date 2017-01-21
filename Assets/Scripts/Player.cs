@@ -15,6 +15,10 @@ public class Player : MonoBehaviour
 	private float dodgeCooldown;
 	private float lastDodgeTime;
 
+	[SerializeField]
+	private float shotCooldown;
+	private float lastShotTime = 0;
+
 	private ControllerInputManager cim;
 
 	void Start()
@@ -24,10 +28,13 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		if(!cim.IsRightStickIdle())
+		if (!cim.IsRightStickIdle ())
+		{
 			transform.eulerAngles = new Vector3(0, 0, cim.GetRightAngle());
+		}
 
 		direction = new Vector2 (0, 0);
+		direction = cim.GetLeftDirections();
 		if(Input.GetKey(KeyCode.W))
 		{
 			direction.y += 1;
@@ -52,7 +59,7 @@ public class Player : MonoBehaviour
 			Dodge();
 		}
 
-		if(Input.GetKeyDown(KeyCode.E))
+		if(Input.GetKeyDown(KeyCode.E) || cim.GetRightTrigger() > 0)
 		{
 			Shoot();
 		}
@@ -93,9 +100,13 @@ public class Player : MonoBehaviour
 
 	private void Shoot()
 	{
+		if(Time.time - lastShotTime < shotCooldown)
+			return;
+		
 		GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
 		var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
 		var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
 		bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
+		lastShotTime = Time.time;
 	}
 }
