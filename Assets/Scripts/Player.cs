@@ -100,6 +100,12 @@ public class Player : MonoBehaviour
 			float targetAngle = cim.GetRightAngle();
 			SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
+			// Face EAST
+			if(targetAngle > 337.5 && targetAngle < 22.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[2];
+				spriteRenderer.flipX = false;
+			}
 			// Face NORTH-EAST
 			if(targetAngle > 22.5 && targetAngle < 67.5)
 			{
@@ -140,12 +146,6 @@ public class Player : MonoBehaviour
 			if(targetAngle > 292.5 && targetAngle < 337.5)
 			{
 				spriteRenderer.sprite = playerDirectionSprites[3];
-				spriteRenderer.flipX = false;
-			}
-			// Face EAST
-			if(targetAngle > 337.5 && targetAngle < 22.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[2];
 				spriteRenderer.flipX = false;
 			}
 		}
