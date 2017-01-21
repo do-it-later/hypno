@@ -100,12 +100,6 @@ public class Player : MonoBehaviour
 			float targetAngle = cim.GetRightAngle();
 			SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
-			// Face EAST
-			if(targetAngle < 337.5 && targetAngle < 22.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[2];
-				spriteRenderer.flipX = false;
-			}
 			// Face NORTH-EAST
 			if(targetAngle > 22.5 && targetAngle < 67.5)
 			{
@@ -146,6 +140,12 @@ public class Player : MonoBehaviour
 			if(targetAngle > 292.5 && targetAngle < 337.5)
 			{
 				spriteRenderer.sprite = playerDirectionSprites[3];
+				spriteRenderer.flipX = false;
+			}
+			// Face EAST
+			if(targetAngle > 337.5 && targetAngle < 22.5)
+			{
+				spriteRenderer.sprite = playerDirectionSprites[2];
 				spriteRenderer.flipX = false;
 			}
 		}
@@ -228,6 +228,7 @@ public class Player : MonoBehaviour
 			shot.direction = new Vector2(x, y).normalized;
 			shot.shotPower = normalShotPower;
 			shot.target = opponent;
+			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
 
 			ReduceEnergy(normalShotEnergy);
 			lastShotTime = Time.time;
@@ -248,6 +249,7 @@ public class Player : MonoBehaviour
 			shot.direction = new Vector2(x, y).normalized;
 			shot.shotPower = chargeShotPower;
 			shot.target = opponent;
+			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
 
 			ReduceEnergy(chargeShotEnergy);
 			lastChargeShotTime = Time.time;
