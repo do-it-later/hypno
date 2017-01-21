@@ -67,6 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70322309d92eb49aeb0a122656a871cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings:
+    delay: 12
+    growthSpeed: {x: 0.2, y: 0.1}
+    maxSize: {x: 8.4, y: 4.2}
 --- !u!212 &212905684834383966
 SpriteRenderer:
   m_ObjectHideFlags: 1

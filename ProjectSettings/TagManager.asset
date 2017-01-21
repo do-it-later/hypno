@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Hole
   - Shot
+  - Foot
   layers:
   - Default
   - TransparentFX
