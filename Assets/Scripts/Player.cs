@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 	public GameObject longShotPrefab;
 	[SerializeField]
 	private GameObject shield;
+	[SerializeField]
+	private RoundManager roundManager;
 
 	[SerializeField]
 	private GameObject opponent;
@@ -103,8 +105,6 @@ public class Player : MonoBehaviour
 
 	private Color originalColor;
 
-	private bool gameStart;
-
 	void Awake()
 	{
 		shield.SetActive(false);
@@ -121,14 +121,12 @@ public class Player : MonoBehaviour
 		cim = GetComponent<ControllerInputManager>();
 		sr = GetComponent<SpriteRenderer>();
 
-		originalColor = GetComponent<SpriteRenderer>().color;
-
-		gameStart = false;
+		originalColor = sr.color;
 	}
 
 	void Update()
 	{
-		if(gameStart)
+		if(roundManager.State == RoundManager.STATE.PLAYING)
 		{
 			ChargeEnergy(Time.deltaTime * passiveEnergyPerSec);
 			direction = cim.GetLeftDirections();
@@ -202,12 +200,12 @@ public class Player : MonoBehaviour
 					Vector2.Scale(opponentPlayer.Direction, new Vector2(1 - possessedControl, 1 - possessedControl));
 				Move();
 				ChargeResistance(Time.deltaTime * 30);
-				GetComponent<SpriteRenderer>().color = opponentPlayer.GetComponent<SpriteRenderer>().color;
+				sr.color = opponentPlayer.GetComponent<SpriteRenderer>().color;
 				shield.SetActive(false);
 			} 
 			else 
 			{
-				GetComponent<SpriteRenderer>().color = originalColor;
+				sr.color = originalColor;
 
 				if(cim.GetRightTrigger() > 0)
 				{
@@ -418,7 +416,7 @@ public class Player : MonoBehaviour
 		ModifyAccuracy();
 		resistanceChanged.Invoke(resistance);
 		energyChanged.Invoke(energy);
-		gameStart = false;
+		sr.color = originalColor;
 	}
 
 	public void OpponentShotHit()
@@ -430,11 +428,6 @@ public class Player : MonoBehaviour
 	{
 		shotsHit++;
 		ModifyAccuracy();
-	}
-
-	public void StartGame()
-	{
-		gameStart = true;
 	}
 
 	public void AbsorbEnergy()

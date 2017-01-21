@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour {
 
-	private enum STATE {
-		COUNTDOWN,
+	public enum STATE {
 		START,
 		PLAYING,
 		END
@@ -17,14 +16,13 @@ public class RoundManager : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> players;
 	private STATE state;
+	public STATE State { get { return state; } }
 	[SerializeField]
 	private ControllerInputManager cim1;
 	[SerializeField]
 	private ControllerInputManager cim2;
 	[SerializeField]
 	private UnityEvent OnRestart = new UnityEvent();
-	[SerializeField]
-	private UnityEvent OnCountdownEnd = new UnityEvent();
 
 	[SerializeField]
 	private Text countdown3;
@@ -37,7 +35,7 @@ public class RoundManager : MonoBehaviour {
 
 	void Start()
 	{
-		state = STATE.COUNTDOWN;
+		state = STATE.START;
 		StartCoroutine(Countdown());
 	}
 
@@ -69,7 +67,7 @@ public class RoundManager : MonoBehaviour {
 	private void RestartGame()
 	{
 		OnRestart.Invoke();
-		state = STATE.COUNTDOWN;
+		state = STATE.START;
 
 		StartCoroutine(Countdown());
 	}
@@ -88,8 +86,6 @@ public class RoundManager : MonoBehaviour {
 		countdownFight.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
 		countdownFight.gameObject.SetActive(false);
-		state = STATE.START;
-
-		OnCountdownEnd.Invoke();
+		state = STATE.PLAYING;
 	}
 }
