@@ -8,12 +8,17 @@ public class Level : MonoBehaviour
 
 	void Start()
 	{
-		CreateHole(Vector2.zero);
+		CreateHole(this.transform.position);
 	}
 
 	private void CreateHole(Vector2 position)
 	{
+		HoleSettings settings = new HoleSettings();
+		settings.delay = 1.0f;
+		settings.growthSpeed = new Vector2(0.35f, 0.25f);
+		settings.maxSize = new Vector2(24, 11);
+
 		GameObject hole = Instantiate(holePrefab, position, Quaternion.identity);
-		hole.GetComponent<Hole>().SetHoleValues(1, 0.25f, 15);
+		hole.GetComponent<Hole>().settings = settings;
 	}
 }
