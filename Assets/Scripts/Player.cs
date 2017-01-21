@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
 	private AccuracyChangeEvent accuracyChanged = new AccuracyChangeEvent();
 	public GameObject smallShotPrefab;
 	public GameObject longShotPrefab;
+	[SerializeField]
+	private GameObject shield;
 
 	[SerializeField]
 	private GameObject opponent;
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour
 
 	[SerializeField, HeaderAttribute("Shot")]
 	private Color shotColor;
+	public Color ShotColor { get { return shotColor; } }
 	[SerializeField]
 	private float shotCooldown;
 	[SerializeField]
@@ -75,9 +78,18 @@ public class Player : MonoBehaviour
 	private float lastChargeShotTime = 0;
 	private float energyChargeStartTime = 0;
 	private bool isCharging;
+	private bool isReflectorTriggered = false;
+	private bool isReflectorAllowed = true;
 	private Vector3 initialPosition;
 	private int shotsFired;
 	private int shotsHit;
+
+	[SerializeField, HeaderAttribute("Reflector")]
+	private int initialReflectorCost;
+	[SerializeField]
+	private int reflectorMaintenanceCost;
+	[SerializeField]
+	private int minimumReflectorEnergyReq;
 
 	[SerializeField, HeaderAttribute("Images")]
 	private List<Sprite> playerDirectionSprites;
@@ -119,61 +131,60 @@ public class Player : MonoBehaviour
 		if(isPossessingOpponent)
 			return;
 
-		if (!cim.IsRightStickIdle())
+		if (!cim.IsLeftStickIdle())
 		{
-			shootAngle = cim.GetRightAngle();
+			shootAngle = cim.GetLeftAngle();
+		}
 
-			float targetAngle = cim.GetRightAngle();
-			SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
-			// Face EAST
-			if(targetAngle > 337.5 && targetAngle < 22.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[2];
-				spriteRenderer.flipX = false;
-			}
-			// Face NORTH-EAST
-			if(targetAngle > 22.5 && targetAngle < 67.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[1];
-				spriteRenderer.flipX = false;
-			}
-			// Face NORTH
-			if(targetAngle > 67.5 && targetAngle < 112.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[0];
-				spriteRenderer.flipX = false;
-			}
-			// Face NORTH-WEST
-			if(targetAngle > 112.5 && targetAngle < 157.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[1];
-				spriteRenderer.flipX = true;
-			}
-			// Face WEST
-			if(targetAngle > 157.5 && targetAngle < 202.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[2];
-				spriteRenderer.flipX = true;
-			}
-			// Face SOUTH-WEST
-			if(targetAngle > 202.5 && targetAngle < 247.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[3];
-				spriteRenderer.flipX = true;
-			}
-			// Face SOUTH
-			if(targetAngle > 247.5 && targetAngle < 292.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[4];
-				spriteRenderer.flipX = false;
-			}
-			// Face SOUTH-EAST
-			if(targetAngle > 292.5 && targetAngle < 337.5)
-			{
-				spriteRenderer.sprite = playerDirectionSprites[3];
-				spriteRenderer.flipX = false;
-			}
+		// Face NORTH-EAST
+		if(shootAngle > 22.5 && shootAngle < 67.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[1];
+			spriteRenderer.flipX = false;
+		}
+		// Face NORTH
+		else if(shootAngle > 67.5 && shootAngle < 112.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[0];
+			spriteRenderer.flipX = false;
+		}
+		// Face NORTH-WEST
+		else if(shootAngle > 112.5 && shootAngle < 157.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[1];
+			spriteRenderer.flipX = true;
+		}
+		// Face WEST
+		else if(shootAngle > 157.5 && shootAngle < 202.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[2];
+			spriteRenderer.flipX = true;
+		}
+		// Face SOUTH-WEST
+		else if(shootAngle > 202.5 && shootAngle < 247.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[3];
+			spriteRenderer.flipX = true;
+		}
+		// Face SOUTH
+		else if(shootAngle > 247.5 && shootAngle < 292.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[4];
+			spriteRenderer.flipX = false;
+		}
+		// Face SOUTH-EAST
+		else if(shootAngle > 292.5 && shootAngle < 337.5)
+		{
+			spriteRenderer.sprite = playerDirectionSprites[3];
+			spriteRenderer.flipX = false;
+		}
+		// Face EAST
+		else
+		{
+			spriteRenderer.sprite = playerDirectionSprites[2];
+			spriteRenderer.flipX = false;
 		}
 
 		if(isPossessed)
@@ -192,14 +203,9 @@ public class Player : MonoBehaviour
 			{
 				Shoot();
 				isCharging = false;
+				shield.SetActive(false);
 			}
-			else if(cim.GetLeftTrigger() > 0)
-			{
-				ShootCharged();
-				isCharging = false;
-			}
-			
-			if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
+			else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.B)))
 			{
 				energyChargeStartTime = Time.time;
 				isCharging = true;
@@ -215,8 +221,17 @@ public class Player : MonoBehaviour
 			}
 			else
 			{
-				Move();
-				isCharging = false;
+				if(cim.GetLeftTrigger() > 0)
+				{
+					ActivateShield();
+					isCharging = false;
+				}
+				else {
+					shield.SetActive(false);
+					isReflectorTriggered = false;
+					isReflectorAllowed = true;
+					Move();
+				}
 			}
 		}
 	}
@@ -263,13 +278,14 @@ public class Player : MonoBehaviour
 			shot.direction = new Vector2(x, y).normalized;
 			shot.shotPower = normalShotPower;
 			shot.target = opponent;
+			shot.shooter = gameObject;
 			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
 			go.GetComponent<SpriteRenderer>().color = shotColor;
 
 			ReduceEnergy(normalShotEnergy);
 			lastShotTime = Time.time;
 			shotsFired++;
-			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
+			ModifyAccuracy();
 		}
 	}
 
@@ -290,12 +306,34 @@ public class Player : MonoBehaviour
 			shot.shotPower = chargeShotPower;
 			shot.target = opponent;
 			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
-			go.GetComponent<SpriteRenderer>().color = shotColor;
 
 			ReduceEnergy(chargeShotEnergy);
 			lastChargeShotTime = Time.time;
 			shotsFired++;
-			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
+			ModifyAccuracy();
+		}
+	}
+
+	private void ActivateShield()
+	{
+		if(shield.activeInHierarchy && isReflectorAllowed)
+		{
+			if(energy >= minimumReflectorEnergyReq - reflectorMaintenanceCost)
+			{
+				ReduceEnergy(reflectorMaintenanceCost * Time.deltaTime);
+			} else {
+				isReflectorAllowed = false;
+			}
+		}
+		else if(energy >= minimumReflectorEnergyReq && !isReflectorTriggered)
+		{
+			shield.SetActive(true);
+
+			ReduceEnergy(initialReflectorCost);
+
+			isReflectorTriggered = true;
+		} else {
+			shield.SetActive(false);
 		}
 	}
 
@@ -327,6 +365,8 @@ public class Player : MonoBehaviour
 		damage = Mathf.CeilToInt(damage * 1.5f);
 		isPossessed = false;
 		isPossessingOpponent = false;
+
+		resistanceChanged.Invoke(resistance);
 	}
 
 	private void ReduceEnergy(float amount)
@@ -371,6 +411,16 @@ public class Player : MonoBehaviour
 		return !direction.x.Equals(0) || !direction.y.Equals(0);
 	}
 
+	private void ModifyAccuracy()
+	{
+		if(shotsFired > 0)
+			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
+		else if(shotsHit > 0)
+			accuracyChanged.Invoke(100);
+		else
+			accuracyChanged.Invoke(0);
+	}
+
 	public void RestartCharacter()
 	{
 		gameObject.SetActive(true);
@@ -380,7 +430,7 @@ public class Player : MonoBehaviour
 		damage = baseDamage;
 		shotsHit = 0;
 		shotsFired = 0;
-		accuracyChanged.Invoke(0);
+		ModifyAccuracy();
 		resistanceChanged.Invoke(resistance);
 		energyChanged.Invoke(energy);
 	}
@@ -393,6 +443,6 @@ public class Player : MonoBehaviour
 	public void ShotHit()
 	{
 		shotsHit++;
-		accuracyChanged.Invoke(shotsHit / (float)shotsFired);
+		ModifyAccuracy();
 	}
 }
