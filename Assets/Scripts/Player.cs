@@ -72,8 +72,21 @@ public class Player : MonoBehaviour
 	[SerializeField, HeaderAttribute("Images")]
 	private List<Sprite> playerDirectionSprites;
 
+	[SerializeField, HeaderAttribute("SFX")]
+	private AudioClip shotSmallSfx;
+	[SerializeField]
+	private AudioClip shotLargeSfx;
+	[SerializeField]
+	private AudioClip gotHitSfx;
+	[SerializeField]
+	private AudioClip teleportSfx;
+	[SerializeField]
+	private AudioClip hoverSfx;
+
 	private ControllerInputManager cim;
 	private float shootAngle;
+
+	private Color originalColor;
 
 	void Start()
 	{
@@ -83,6 +96,8 @@ public class Player : MonoBehaviour
 		opponentPlayer = opponent.GetComponent<Player>();
 
 		cim = GetComponent<ControllerInputManager>();
+
+		originalColor = GetComponent<SpriteRenderer>().color;
 	}
 
 	void Update()
@@ -156,9 +171,12 @@ public class Player : MonoBehaviour
 				Vector2.Scale(opponentPlayer.Direction, new Vector2(1 - possessedControl, 1 - possessedControl));
 			Move();
 			ChargeResistance(30);
+			GetComponent<SpriteRenderer>().color = opponentPlayer.GetComponent<SpriteRenderer>().color;
 		} 
 		else 
 		{
+			GetComponent<SpriteRenderer>().color = originalColor;
+
 			if(cim.GetRightTrigger() > 0)
 			{
 				Shoot();
@@ -194,6 +212,8 @@ public class Player : MonoBehaviour
 
 	private void Move()
 	{
+//		SoundManager.instance.PlayLoopedSfx(hoverSfx);
+
 		Vector2 position = transform.position;
 		position.x += direction.x * movementSpeed * Time.deltaTime;
 		position.y += direction.y * movementSpeed * Time.deltaTime;
@@ -204,6 +224,8 @@ public class Player : MonoBehaviour
 	{
 		if(Time.time - lastDodgeTime > dodgeCooldown && IsMoving())
 		{
+			SoundManager.instance.PlaySingleSfx(teleportSfx);
+
 			Vector2 position = transform.position;
 			var dir = direction.normalized;
 			position.x += dir.x * dodgeDistance;
@@ -221,6 +243,8 @@ public class Player : MonoBehaviour
 
 		if(energy >= normalShotEnergy)
 		{
+			SoundManager.instance.PlaySingleSfx(shotSmallSfx);
+
 			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
 			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
@@ -242,6 +266,8 @@ public class Player : MonoBehaviour
 
 		if(energy >= chargeShotEnergy)
 		{
+			SoundManager.instance.PlaySingleSfx(shotLargeSfx);
+
 			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (shootAngle * Mathf.Deg2Rad);
 			var y = Mathf.Sin (shootAngle * Mathf.Deg2Rad);
@@ -258,6 +284,8 @@ public class Player : MonoBehaviour
 
 	public void ReduceResistance(int power)
 	{
+		SoundManager.instance.PlaySingleSfx(gotHitSfx);
+
 		resistance -= power * damage;
 
 		if(resistance <= 0)
