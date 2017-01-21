@@ -353,4 +353,9 @@ public class Player : MonoBehaviour
 	{
 		return !direction.x.Equals(0) || !direction.y.Equals(0);
 	}
+
+	public void ChangeSat(float resistance)
+	{
+		GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, new Color(1, 1, 1), resistance / maximumResistance);
+	}
 }
