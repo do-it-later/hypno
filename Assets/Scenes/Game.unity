@@ -349,11 +349,8 @@ MonoBehaviour:
   maximumResistance: 100
   shotColor: {r: 1, g: 0.30882353, b: 0.30882353, a: 1}
   shotCooldown: 0.33
-  chargeShotCooldown: 3
   normalShotPower: 1
   normalShotEnergy: 10
-  chargeShotPower: 2
-  chargeShotEnergy: 33
   baseDamage: 16
   initialReflectorCost: 0
   reflectorMaintenanceCost: 0
@@ -573,8 +570,8 @@ GameObject:
   - component: {fileID: 186487689}
   - component: {fileID: 186487688}
   m_Layer: 0
-  m_Name: Reflector
-  m_TagString: Reflector
+  m_Name: Shield
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -721,8 +718,8 @@ GameObject:
   - component: {fileID: 289722609}
   - component: {fileID: 289722608}
   m_Layer: 0
-  m_Name: Reflector
-  m_TagString: Reflector
+  m_Name: Shield
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2454,11 +2451,8 @@ MonoBehaviour:
   maximumResistance: 100
   shotColor: {r: 0, g: 0.26090252, b: 0.50689656, a: 1}
   shotCooldown: 0.33
-  chargeShotCooldown: 3
   normalShotPower: 1
   normalShotEnergy: 10
-  chargeShotPower: 2
-  chargeShotEnergy: 33
   baseDamage: 16
   initialReflectorCost: 0
   reflectorMaintenanceCost: 0

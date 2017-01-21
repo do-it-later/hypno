@@ -7,7 +7,7 @@ TagManager:
   - Hole
   - Shot
   - Foot
-  - Reflector
+  - Shield
   layers:
   - Default
   - TransparentFX
