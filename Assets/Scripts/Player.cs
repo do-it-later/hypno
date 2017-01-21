@@ -130,15 +130,6 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D col)
-	{
-		if(col.tag == "Hole")
-		{
-			Destroy(gameObject);
-			Debug.Log("Dead");
-		}
-	}
-
 	private void Move()
 	{
 		Vector2 position = transform.position;

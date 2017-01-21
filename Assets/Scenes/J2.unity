@@ -1971,7 +1971,7 @@ MonoBehaviour:
   normalShotEnergy: 10
   chargeShotPower: 2
   chargeShotEnergy: 30
-  baseDamage: 10
+  baseDamage: 20
 --- !u!58 &1830146940
 CircleCollider2D:
   m_ObjectHideFlags: 0
