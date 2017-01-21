@@ -8,9 +8,16 @@ public class Shot : MonoBehaviour
 	public Vector2 direction;
 	public int damage;
 	public GameObject target;
+	public GameObject shooter;
+	private Player shooterPlayer;
 
 	[SerializeField]
 	private int movementSpeed;
+
+	void Start()
+	{
+		shooterPlayer = shooter.GetComponent<Player>();
+	}
 
 	void Update()
 	{
@@ -18,6 +25,8 @@ public class Shot : MonoBehaviour
 		position.x += direction.x * movementSpeed * Time.deltaTime;
 		position.y += direction.y * movementSpeed * Time.deltaTime;
 		transform.position = position;
+
+		GetComponent<SpriteRenderer>().color = shooterPlayer.ShotColor;	
 	}
 
 	void OnBecameInvisible() {
@@ -28,8 +37,14 @@ public class Shot : MonoBehaviour
 	{
 		if(collider.tag == "Shield")
 		{
-			target.GetComponent<Player>().AbsorbEnergy();
-			Destroy(gameObject);
+			direction = new Vector2(-direction.x, -direction.y);
+			GameObject newTarget = shooter;
+			shooter = target;
+			target = newTarget;
+			shooterPlayer = shooter.GetComponent<Player>();
+
+			damage = Mathf.RoundToInt(damage * 1.1f);
+			movementSpeed = Mathf.RoundToInt(movementSpeed * 1.1f);
 		}
 		else if(collider.name == target.name)
 		{
