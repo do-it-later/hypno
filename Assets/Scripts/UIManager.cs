@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     public Image[] healthBars;
     public Image[] chargeBars;
@@ -15,7 +15,7 @@ public class HealthManager : MonoBehaviour
     };
 
     // TODO: For testing. Delete or comment out! - JP
-    //float health = 100;
+    //float percent = 100;
 
 	// Use this for initialization
 	void Start ()
@@ -26,11 +26,13 @@ public class HealthManager : MonoBehaviour
 	void Update ()
     {
         // TODO: For testing. Delete or comment out! - JP
-        //if (health > 0)
+        //if (percent > 0)
         //{
-        //    --health;
-        //    updateUIItem(1, UIObject.HEALTH, health);
-        //    updateUIItem(1, UIObject.CHARGE, health);
+        //    percent -= 0.1f;
+        //    updateUIItem(2, UIObject.HEALTH, percent);
+        //    updateUIItem(2, UIObject.CHARGE, percent);
+        //    updateUIItem(1, UIObject.HEALTH, percent);
+        //    updateUIItem(1, UIObject.CHARGE, percent);
         //}
 	}
 
