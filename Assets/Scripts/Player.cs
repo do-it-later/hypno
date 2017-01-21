@@ -4,125 +4,152 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public GameObject bulletPrefab;
+	public GameObject shotPrefab;
 
+	[SerializeField]
+	private GameObject opponent;
+	private Player opponentPlayer;
+	[SerializeField, HeaderAttribute("Possession")]
+	private float possessedControl;
+	private bool isPossessed;
+	private bool isPossessingOpponent;
+	public bool IsPossessingOpponent { set { isPossessingOpponent = value; } }
 	[SerializeField]
 	private int movementSpeed;
 	private Vector2 direction;
-	[SerializeField]
+	public Vector2 Direction { get { return direction; } }
+	[SerializeField, HeaderAttribute("Dodge")]
 	private int dodgeDistance;
 	[SerializeField]
 	private float dodgeCooldown;
 	private float lastDodgeTime;
+	
+	[SerializeField, HeaderAttribute("Energy")]
+	private float maximumEnergy = 100;
+	private float energy;
+	[SerializeField]
+	private float passiveEnergyPerSec;
+	[SerializeField]
+	private float chargeEnergyPerSec;
+
+	[SerializeField, HeaderAttribute("Resistance")]
+	private float maximumResistance = 100;
+	private float resistance;
+
+	[SerializeField, HeaderAttribute("Shot")]
+	private float shotCooldown;
+	[SerializeField]
+	private float chargeShotCooldown;
+	[SerializeField]
+	private int normalShotPower;
 	[SerializeField]
 	private int normalShotEnergy;
 	[SerializeField]
+	private int chargeShotPower = 3;
+	[SerializeField]
 	private int chargeShotEnergy;
 	[SerializeField]
-	private int chargeShotPower;
-	[SerializeField]
-	private float energyPerSec;
-	private bool chargingEnergy;
-	private float energy;
-
-	[SerializeField]
-	private float shotCooldown;
+	private int baseDamage;
+	private int damage;
 	private float lastShotTime = 0;
+	private float lastChargeShotTime = 0;
 
 	private ControllerInputManager cim;
 
 	void Start()
 	{
-		energy = 100;
-		chargingEnergy = false;
+		energy = maximumEnergy;
+		resistance = maximumResistance;
+		damage = baseDamage;
+		opponentPlayer = opponent.GetComponent<Player>();
 
 		cim = GetComponent<ControllerInputManager>();
 	}
 
 	void Update()
 	{
+		ChargeEnergy(passiveEnergyPerSec);
+		direction = cim.GetLeftDirections();
+
+		if(isPossessingOpponent)
+			return;
+
 		if (!cim.IsRightStickIdle ())
 		{
 			transform.eulerAngles = new Vector3(0, 0, cim.GetRightAngle());
 		}
 
-		direction = new Vector2 (0, 0);
-		direction = cim.GetLeftDirections();
-		if(Input.GetKey(KeyCode.W))
+		if(isPossessed)
 		{
-			direction.y += 1;
-		}
-		if(Input.GetKey(KeyCode.S))
-		{
-			direction.y -= 1;
-		}
-		if(Input.GetKey(KeyCode.A))
-		{
-			direction.x -= 1;
-		}
-		if(Input.GetKey(KeyCode.D))
-		{
-			direction.x += 1;
-		}
-
-		if(Input.GetKeyDown(KeyCode.Space))
-		{
-			Dodge();
-		}
-
-		if(Input.GetKeyDown(KeyCode.E) || cim.GetRightTrigger() > 0)
-		{
-			Shoot();
-		}
-
-		if(Input.GetKeyDown(KeyCode.Q))
-		{
-			chargingEnergy = true;
-		}
-		else if(Input.GetKeyUp(KeyCode.Q))
-		{
-			chargingEnergy = false;
-		}
-
-		if(chargingEnergy)
-		{
-			ChargeEnergy();
-
-		}
-		else
-		{
+			direction = Vector2.Scale(cim.GetLeftDirections(), new Vector2(possessedControl, possessedControl)) + 
+				Vector2.Scale(opponentPlayer.Direction, new Vector2(1 - possessedControl, 1 - possessedControl));
 			Move();
+			ChargeResistance(30);
+		} 
+		else 
+		{
+			if(cim.GetRightTrigger() > 0)
+			{
+				Shoot();
+			}
+			else if(cim.GetLeftTrigger() > 0)
+			{
+				ShootCharged();
+			}
+
+			if(Input.GetKey(cim.GetButtonString(ControllerInputManager.Button.B)))
+			{
+				ChargeEnergy(chargeEnergyPerSec);
+			}
+			else if(Input.GetKeyDown(cim.GetButtonString(ControllerInputManager.Button.RB)))
+			{
+				Dodge();
+			}
+			else
+			{
+				Move();
+			}
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collider)
+	void OnTriggerEnter2D(Collider2D col)
 	{
-		if(collider.tag == "Hole")
+		if(col.tag == "Hole")
 		{
 			Destroy(gameObject);
 			Debug.Log("Dead");
 		}
 	}
 
+	public void ReduceResistance(int power)
+	{
+		resistance -= power * 10;
+
+		if(resistance <= 0)
+		{
+			resistance = 0;
+			isPossessed = true;
+			opponentPlayer.IsPossessingOpponent = true;
+		}
+	}
+
 	private void Move()
 	{
-		if(direction.x != 0 || direction.y != 0)
-		{
-			Vector2 position = this.transform.position;
-			position.x += direction.x * movementSpeed * Time.deltaTime;
-			position.y += direction.y * movementSpeed * Time.deltaTime;
-			this.transform.position = position;
-		}
+		Vector2 position = transform.position;
+		position.x += direction.x * movementSpeed * Time.deltaTime;
+		position.y += direction.y * movementSpeed * Time.deltaTime;
+		transform.position = position;
 	}
 
 	private void Dodge()
 	{
-		if(Time.time - lastDodgeTime > dodgeCooldown && (direction.x != 0 || direction.y != 0))
+		if(Time.time - lastDodgeTime > dodgeCooldown && IsMoving())
 		{
-			Vector2 position = this.transform.position;
-			position.x += direction.x * dodgeDistance;
-			position.y += direction.y * dodgeDistance;
-			this.transform.position = position;
+			Vector2 position = transform.position;
+			var dir = direction.normalized;
+			position.x += dir.x * dodgeDistance;
+			position.y += dir.y * dodgeDistance;
+			transform.position = position;
 
 			lastDodgeTime = Time.time;
 		}
@@ -133,38 +160,66 @@ public class Player : MonoBehaviour
 		if(Time.time - lastShotTime < shotCooldown)
 			return;
 
-		if(energy > normalShotEnergy)
+		if(energy >= normalShotEnergy)
 		{
-			GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
+			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
 			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
-			bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
+			var shot = go.GetComponent<Shot>();
+			shot.direction = new Vector2(x, y).normalized;
+			shot.shotPower = normalShotPower;
+			shot.target = opponent;
 
 			energy -= normalShotEnergy;
+			lastShotTime = Time.time;
 		}
 	}
 
 	private void ShootCharged()
 	{
-		if(energy > chargeShotEnergy)
+		if(Time.time - lastChargeShotTime < chargeShotCooldown)
+			return;
+
+		if(energy >= chargeShotEnergy)
 		{
-			GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
+			GameObject go = Instantiate(shotPrefab, transform.position, Quaternion.identity);
 			var x = Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad);
 			var y = Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad);
-			bullet.GetComponent<Bullet>().direction = new Vector2(x, y).normalized;
-			bullet.GetComponent<Bullet>().shotPower = chargeShotPower;
+			var shot = go.GetComponent<Shot>();
+			shot.direction = new Vector2(x, y).normalized;
+			shot.shotPower = chargeShotPower;
+			shot.target = opponent;
 
 			energy -= chargeShotEnergy;
+			lastChargeShotTime = Time.time;
 		}
 	}
 
-	private void ChargeEnergy()
+	private void ChargeEnergy(float amount)
 	{
-		energy += 1/Time.deltaTime * energyPerSec;
+		energy += Time.deltaTime * amount;
 
-		if(energy > 100)
+		if(energy > maximumEnergy)
 		{
-			energy = 100;
+			energy = maximumEnergy;
 		}
+	}
+
+	private void ChargeResistance(float amount)
+	{
+		resistance += Time.deltaTime * amount;
+
+		if(resistance > maximumResistance)
+		{
+			resistance = maximumResistance;
+			isPossessed = false;
+			opponentPlayer.IsPossessingOpponent = false;
+			damage = Mathf.CeilToInt(damage * 1.5f);
+		}
+	}
+
+	private bool IsMoving()
+	{
+		return !direction.x.Equals(0) || !direction.y.Equals(0);
 	}
 }

@@ -1,23 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Bullet : MonoBehaviour
+public class Shot : MonoBehaviour
 {
 	public Vector2 direction;
 	public int shotPower;
+	public GameObject target;
 
 	[SerializeField]
 	private int movementSpeed;
-	[SerializeField]
-	private int range;
-
-	private Vector2 startPosition;
 
 	void Start()
 	{
-		startPosition = this.transform.position;
-
 		Vector2 scale = this.transform.localScale;
 		scale.x *= shotPower;
 		scale.y *= shotPower;
@@ -30,34 +26,41 @@ public class Bullet : MonoBehaviour
 		position.x += direction.x * movementSpeed * Time.deltaTime;
 		position.y += direction.y * movementSpeed * Time.deltaTime;
 		this.transform.position = position;
+	}
 
-		if(Vector2.Distance(this.transform.position, startPosition) > range)
-		{
-			Destroy(gameObject);
-		}
+	void OnBecameInvisible() {
+		Destroy(gameObject);
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		if(collider.tag == "Bullet")
+		if(collider.tag == "Shot")
 		{
-			Bullet colliderBullet = collider.GetComponent<Bullet>();
+			Shot colliderShot = collider.GetComponent<Shot>();
 
-			if(colliderBullet.shotPower == this.shotPower)
+			if(colliderShot.shotPower == this.shotPower)
 			{
 				Destroy(this.gameObject);
 				Destroy(collider.gameObject);
 			}
-			else if(colliderBullet.shotPower > this.shotPower)
+			else if(colliderShot.shotPower > this.shotPower)
 			{
 				Destroy(this.gameObject);
-				colliderBullet.shotPower = 3;
+				colliderShot.shotPower = 3;
 			}
-			else if(colliderBullet.shotPower < this.shotPower)
+			else if(colliderShot.shotPower < this.shotPower)
 			{
 				Destroy(collider.gameObject);
 				this.shotPower = 3;
 			}
+		}
+
+		if(collider.name == target.name)
+		{
+			var player = collider.GetComponent<Player>();
+			player.ReduceResistance(shotPower);
+			Debug.Log("hit target");
+			Destroy(gameObject);
 		}
 	}
 }

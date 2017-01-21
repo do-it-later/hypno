@@ -19,7 +19,7 @@ public class ControllerInputManager : MonoBehaviour {
 		RB = 5,
     }
 
-	private string osString = "Win";
+	private readonly string osString = "Win";
     #elif UNITY_STANDALONE_OSX
     public enum Button
     {
@@ -33,20 +33,20 @@ public class ControllerInputManager : MonoBehaviour {
 		RB = 14,
     }
 
-	private string osString = "Mac";
+	private readonly string osString = "Mac";
     #endif
 
     public string GetButtonString(Button button)
     {
         int buttonNum = (int)button;
-        return "joystick " + _controller.ToString() + " button " + buttonNum.ToString();
+        return "joystick " + _controller + " button " + buttonNum;
     }
 
     public float GetLeftAngle()
     {
-        float horiz = Input.GetAxis("P" + _controller.ToString() + "_LeftX");
+        float horiz = Input.GetAxis("P" + _controller + "_LeftX");
         // Multiply by -1 to have the positive angle going upwards
-        float vert = Input.GetAxis("P" + _controller.ToString() + "_LeftY") * -1;
+        float vert = Input.GetAxis("P" + _controller + "_LeftY") * -1;
 
         float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg;
 
@@ -58,18 +58,18 @@ public class ControllerInputManager : MonoBehaviour {
 
 	public bool IsLeftStickIdle() 
 	{
-		float horiz = Input.GetAxis("P" + _controller.ToString() + "_LeftX");
+		float horiz = Input.GetAxis("P" + _controller + "_LeftX");
 		// Multiply by -1 to have the positive angle going upwards
-		float vert = Input.GetAxis("P" + _controller.ToString() + "_LeftY") * -1;
+		float vert = Input.GetAxis("P" + _controller + "_LeftY") * -1;
 
 		return horiz == 0 && vert == 0;
 	}
 
 	public float GetRightAngle()
 	{
-		float horiz = Input.GetAxis("P" + _controller.ToString() + "_RightX_" + osString);
+		float horiz = Input.GetAxis("P" + _controller + "_RightX_" + osString);
 		// Multiply by -1 to have the positive angle going upwards
-		float vert = Input.GetAxis("P" + _controller.ToString() + "_RightY_" + osString) * -1;
+		float vert = Input.GetAxis("P" + _controller + "_RightY_" + osString) * -1;
 
 		float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg;
 
@@ -81,24 +81,24 @@ public class ControllerInputManager : MonoBehaviour {
 
 	public bool IsRightStickIdle() 
 	{
-		float horiz = Input.GetAxis("P" + _controller.ToString() + "_RightX_" + osString);
+		float horiz = Input.GetAxis("P" + _controller + "_RightX_" + osString);
 		// Multiply by -1 to have the positive angle going upwards
-		float vert = Input.GetAxis("P" + _controller.ToString() + "_RightY_" + osString) * -1;
+		float vert = Input.GetAxis("P" + _controller + "_RightY_" + osString) * -1;
 
 		return horiz == 0 && vert == 0;
 	}
 
 	public Vector2 GetLeftDirections()
 	{
-		var x = Input.GetAxis("P" + _controller.ToString() + "_LeftX");
-		var y = Input.GetAxis("P" + _controller.ToString() + "_LeftY") * -1;
+		var x = Input.GetAxis("P" + _controller + "_LeftX");
+		var y = Input.GetAxis("P" + _controller + "_LeftY") * -1;
 		return new Vector2(x, y);
 	}
 
 	public Vector2 GetRightDirections()
 	{
-		var x = Input.GetAxis("P" + _controller.ToString() + "_RightX_" + osString);
-		var y = Input.GetAxis("P" + _controller.ToString() + "_RightY_" + osString) * -1;
+		var x = Input.GetAxis("P" + _controller + "_RightX_" + osString);
+		var y = Input.GetAxis("P" + _controller + "_RightY_" + osString) * -1;
 		return new Vector2(x, y);
 	}
 
@@ -106,13 +106,13 @@ public class ControllerInputManager : MonoBehaviour {
 	// Windows: Returns [0, 1] where 0 is unpressed and 1 is fully pressed.
 	public float GetLeftTrigger()
 	{
-		return Input.GetAxis("P" + _controller.ToString() + "_LT_" + osString);
+		return Input.GetAxis("P" + _controller + "_LT_" + osString);
 	}
 
 	// Mac: Returns 0 until used, then [-1, 1] where -1 is unpressed, and 1 is fully pressed.
 	// Windows: Returns [0, 1] where 0 is unpressed and 1 is fully pressed.
 	public float GetRightTrigger()
 	{
-		return Input.GetAxis("P" + _controller.ToString() + "_RT_" + osString);
+		return Input.GetAxis("P" + _controller + "_RT_" + osString);
 	}
 }
