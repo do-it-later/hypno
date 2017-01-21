@@ -1,9 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
+	[Serializable]
+	public class EnergyChangeEvent : UnityEvent<float> { }
+	[Serializable]
+	public class ResistanceChangeEvent : UnityEvent<float> { }
+
+	[SerializeField]
+	private EnergyChangeEvent energyChanged = new EnergyChangeEvent();
+	[SerializeField]
+	private ResistanceChangeEvent resistanceChanged = new ResistanceChangeEvent();
 	public GameObject shotPrefab;
 
 	[SerializeField]
@@ -121,18 +132,6 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	public void ReduceResistance(int power)
-	{
-		resistance -= power * 10;
-
-		if(resistance <= 0)
-		{
-			resistance = 0;
-			isPossessed = true;
-			opponentPlayer.IsPossessingOpponent = true;
-		}
-	}
-
 	private void Move()
 	{
 		Vector2 position = transform.position;
@@ -170,7 +169,7 @@ public class Player : MonoBehaviour
 			shot.shotPower = normalShotPower;
 			shot.target = opponent;
 
-			energy -= normalShotEnergy;
+			ReduceEnergy(normalShotEnergy);
 			lastShotTime = Time.time;
 		}
 	}
@@ -190,9 +189,30 @@ public class Player : MonoBehaviour
 			shot.shotPower = chargeShotPower;
 			shot.target = opponent;
 
-			energy -= chargeShotEnergy;
+			ReduceEnergy(chargeShotEnergy);
 			lastChargeShotTime = Time.time;
 		}
+	}
+
+	public void ReduceResistance(int power)
+	{
+		resistance -= power * 10;
+
+		if(resistance <= 0)
+		{
+			resistance = 0;
+			isPossessed = true;
+			opponentPlayer.IsPossessingOpponent = true;
+		}
+
+		resistanceChanged.Invoke(resistance);
+	}
+
+	private void ReduceEnergy(float amount)
+	{
+		energy -= amount;
+
+		energyChanged.Invoke(energy);
 	}
 
 	private void ChargeEnergy(float amount)
@@ -203,6 +223,8 @@ public class Player : MonoBehaviour
 		{
 			energy = maximumEnergy;
 		}
+
+		energyChanged.Invoke(energy);
 	}
 
 	private void ChargeResistance(float amount)
@@ -216,6 +238,8 @@ public class Player : MonoBehaviour
 			opponentPlayer.IsPossessingOpponent = false;
 			damage = Mathf.CeilToInt(damage * 1.5f);
 		}
+
+		resistanceChanged.Invoke(resistance);
 	}
 
 	private bool IsMoving()
