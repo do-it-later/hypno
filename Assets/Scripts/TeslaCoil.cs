@@ -48,6 +48,7 @@ public class TeslaCoil : MonoBehaviour
 	public void Restart()
 	{
 		spriteRenderer.sprite = idle;
+		StopCoroutine(StartCoil());
 		StartCoroutine(StartCoil());
 	}
 }
