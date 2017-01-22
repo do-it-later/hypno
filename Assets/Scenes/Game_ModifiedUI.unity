@@ -386,6 +386,7 @@ MonoBehaviour:
   gotHitSfx: {fileID: 8300000, guid: 149f3a34e87564d11a648e8462ad0e0d, type: 3}
   teleportSfx: {fileID: 8300000, guid: e43014c4b993744f58d02b060aa9d9f2, type: 3}
   hoverSfx: {fileID: 8300000, guid: 8a32878d2ec7f4491b2e2d80b33e3fd0, type: 3}
+  stalemateSfx: {fileID: 0}
 --- !u!61 &104298969
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1232,7 +1233,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: f65539f1c76bf4a6ea3aa176c0dfd1dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 658800e5b6c0fb34dbe11f62a5c1268f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1530,6 +1531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxSource: {fileID: 1438743538}
+  backgroundSfxSource: {fileID: 0}
   musicSource: {fileID: 119627341}
 --- !u!4 &1070966350
 Transform:
@@ -1578,8 +1580,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 96.2, y: 10.500008}
-  m_SizeDelta: {x: 172.91, y: 30}
+  m_AnchoredPosition: {x: 88.4, y: 10.500008}
+  m_SizeDelta: {x: 157.2, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1114537960
 MonoBehaviour:
@@ -1720,7 +1722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.5, y: 44.5}
+  m_AnchoredPosition: {x: -110.5, y: 54.3}
   m_SizeDelta: {x: 94.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1117410789
@@ -2435,7 +2437,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 57.1, y: 44.5}
+  m_AnchoredPosition: {x: 57.1, y: 54.3}
   m_SizeDelta: {x: 94.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1520414342
@@ -2890,6 +2892,7 @@ MonoBehaviour:
   gotHitSfx: {fileID: 8300000, guid: 149f3a34e87564d11a648e8462ad0e0d, type: 3}
   teleportSfx: {fileID: 8300000, guid: e43014c4b993744f58d02b060aa9d9f2, type: 3}
   hoverSfx: {fileID: 8300000, guid: 8a32878d2ec7f4491b2e2d80b33e3fd0, type: 3}
+  stalemateSfx: {fileID: 0}
 --- !u!61 &1684553043
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3006,7 +3009,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.8, y: 89}
+  m_AnchoredPosition: {x: -0.8, y: 100.7}
   m_SizeDelta: {x: 342.6, y: 45.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1700149436
@@ -3464,6 +3467,10 @@ MonoBehaviour:
   countdown2: {fileID: 1565285812}
   countdown1: {fileID: 1801983496}
   countdownFight: {fileID: 1297066262}
+  countdown3Sfx: {fileID: 0}
+  countdown2Sfx: {fileID: 0}
+  countdown1Sfx: {fileID: 0}
+  countdownFightSfx: {fileID: 0}
 --- !u!4 &1890186322
 Transform:
   m_ObjectHideFlags: 0
@@ -3677,8 +3684,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -86.44801, y: 10.5}
-  m_SizeDelta: {x: 172.91, y: 30}
+  m_AnchoredPosition: {x: -80.6, y: 10.5}
+  m_SizeDelta: {x: 155.9, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2084477218
 MonoBehaviour:
