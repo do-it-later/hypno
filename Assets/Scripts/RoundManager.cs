@@ -74,11 +74,11 @@ public class RoundManager : MonoBehaviour {
             var p1 = players[0].GetComponent<Player>();
             var p2 = players[1].GetComponent<Player>();
             gameOverScript.UpdatePlayerNames(p1.PlayerName, p2.PlayerName);
-            gameOverScript.updatePlayerNameColors(players[0].GetComponent<SpriteRenderer>().color, players[1].GetComponent<SpriteRenderer>().color);
+            gameOverScript.updatePlayerNameColors(p1.OriginalColor, p2.OriginalColor);
             if(playersAlive == 0)
             	gameOverScript.updateVictoryText("It's a tie!", Color.white);
             else
-            	gameOverScript.updateVictoryText( winner.GetComponent<Player>().PlayerName + " wins!", winner.GetComponent<SpriteRenderer>().color);
+            	gameOverScript.updateVictoryText( winner.GetComponent<Player>().PlayerName + " wins!", winner.GetComponent<Player>().OriginalColor);
             
             gameOverScript.updatePlayerAccuracy(p1.GetAccuracy(), p2.GetAccuracy());
             gameOverScript.updatePlayerReflected(p1.ShotsReflected, p2.ShotsReflected);

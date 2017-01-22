@@ -7,8 +7,10 @@ public class MainMenuUI : MonoBehaviour
 {
 	public GameObject mainMenuPage;
 	public GameObject creditsPage;
-
-	private ControllerInputManager controllerInputManager;
+    [SerializeField, Header("Controllers")]
+    private ControllerInputManager cim1;
+    [SerializeField]
+    private ControllerInputManager cim2;
 
 	void Start()
 	{
@@ -17,18 +19,18 @@ public class MainMenuUI : MonoBehaviour
 
 	void Update()
 	{
-		if(mainMenuPage.activeSelf && Input.GetKeyDown(controllerInputManager.GetButtonString(ControllerInputManager.Button.START)))
+		if(mainMenuPage.activeSelf)
 		{
-			SceneManager.LoadScene("Game");
-		}
+            if (Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.START)) || Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.START)))
+			    SceneManager.LoadScene("Game");
+            if (Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.SELECT)) || Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.SELECT)))
+            {
+                mainMenuPage.SetActive(false);
+                creditsPage.SetActive(true);
+            }
+        }
 
-		if(mainMenuPage.activeSelf && Input.GetKeyDown(controllerInputManager.GetButtonString(ControllerInputManager.Button.SELECT)))
-		{
-			mainMenuPage.SetActive(false);
-			creditsPage.SetActive(true);
-		}
-
-		if(creditsPage.activeSelf && Input.GetKeyDown(controllerInputManager.GetButtonString(ControllerInputManager.Button.B)))
+		if(creditsPage.activeSelf && (Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.B)) || Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.B))))
 		{
 			mainMenuPage.SetActive(true);
 			creditsPage.SetActive(false);

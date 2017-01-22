@@ -120,6 +120,7 @@ public class Player : MonoBehaviour
 	private float shootAngle;
 
 	private Color originalColor;
+    public Color OriginalColor { get { return originalColor;  } }
 
 	void Awake()
 	{
@@ -282,9 +283,10 @@ public class Player : MonoBehaviour
 		if(currentDodgeCooldown <= 0 && IsMoving())
 		{
 			SoundManager.instance.PlaySingleSfx(teleportSfx);
-			StartCoroutine(PlayTeleport());
+            GameObject go = Instantiate(teleportPrefab, transform.position, Quaternion.identity);
+            go.GetComponent<SpriteRenderer>().color = originalColor;
 
-			Vector2 position = transform.position;
+            Vector2 position = transform.position;
 			var dir = direction.normalized;
 			position.x += dir.x * dodgeDistance;
 			position.y += dir.y * dodgeDistance;
@@ -292,14 +294,6 @@ public class Player : MonoBehaviour
 
 			currentDodgeCooldown = dodgeCooldown;
 		}
-	}
-
-	IEnumerator PlayTeleport()
-	{
-		GameObject go = Instantiate(teleportPrefab, transform.position, Quaternion.identity);
-		go.GetComponent<SpriteRenderer>().color = originalColor;
-		yield return new WaitForSeconds(0.1f);
-		Destroy(go);
 	}
 
 	private void Shoot()
