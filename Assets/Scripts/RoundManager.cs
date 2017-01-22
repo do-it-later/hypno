@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour {
 
-    public GameObject gameOverDialog;
-    public GameOverScreen gameOverScript;
-
 	public enum STATE {
 		START,
 		PLAYING,
@@ -26,6 +23,9 @@ public class RoundManager : MonoBehaviour {
 	private ControllerInputManager cim2;
 	[SerializeField]
 	private UnityEvent OnRestart = new UnityEvent();
+
+	public GameObject gameOverDialog;
+    private GameOverScreen gameOverScript;
 
 	[SerializeField]
 	private Text countdown3;
@@ -49,6 +49,7 @@ public class RoundManager : MonoBehaviour {
 	{
 		state = STATE.START;
 		StartCoroutine(Countdown());
+		gameOverScript = gameOverDialog.GetComponent<GameOverScreen>();
 	}
 
 	void Update() {
@@ -69,18 +70,13 @@ public class RoundManager : MonoBehaviour {
 		if(state == STATE.END)
 		{
             gameOverDialog.SetActive(true);
-            gameOverScript.updateVictoryText(winner+" wins!");
+            if(playersAlive == 0)
+            	gameOverScript.updateVictoryText("It's a tie!");
+            else
+            	gameOverScript.updateVictoryText( winner + " wins!");
             var p1 = players[0].GetComponent<Player>();
             var p2 = players[1].GetComponent<Player>();
-            if (p1.shotsHit > 0)
-            {
-                gameOverScript.updatePlayerAccuracy(1, p1.shotsFired / p1.shotsHit);
-            }
-
-            if (p2.shotsHit > 0)
-            {
-                gameOverScript.updatePlayerAccuracy(2, p2.shotsFired / p2.shotsHit);
-            }
+            gameOverScript.updatePlayerAccuracy(p1.GetAccuracy(), p2.GetAccuracy());
 
 			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.START)))
 			{
