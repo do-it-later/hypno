@@ -33,6 +33,15 @@ public class RoundManager : MonoBehaviour {
 	[SerializeField]
 	private Text countdownFight;
 
+	[SerializeField]
+	private AudioClip countdown3Sfx;
+	[SerializeField]
+	private AudioClip countdown2Sfx;
+	[SerializeField]
+	private AudioClip countdown1Sfx;
+	[SerializeField]
+	private AudioClip countdownFightSfx;
+
 	void Start()
 	{
 		state = STATE.START;
@@ -74,14 +83,18 @@ public class RoundManager : MonoBehaviour {
 
 	IEnumerator Countdown()
 	{
+		SoundManager.instance.PlaySingleSfx(countdown3Sfx);
 		countdown3.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(countdown2Sfx);
 		countdown3.gameObject.SetActive(false);
 		countdown2.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(countdown1Sfx);
 		countdown2.gameObject.SetActive(false);
 		countdown1.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(countdownFightSfx);
 		countdown1.gameObject.SetActive(false);
 		countdownFight.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
