@@ -32,16 +32,16 @@ public class TeslaCoil : MonoBehaviour
 	IEnumerator StartCoil()
 	{
 		yield return new WaitForSeconds(8.0f);
-		SoundManager.instance.PlaySingleSfx(beepSfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = green;
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(beepSfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = yellow;
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(beepSfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = red;
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(activateSfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(activateSfx);
 		spriteRenderer.sprite = armed;
 	}
 

@@ -83,18 +83,18 @@ public class RoundManager : MonoBehaviour {
 
 	IEnumerator Countdown()
 	{
-		SoundManager.instance.PlaySingleSfx(countdown3Sfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(countdown3Sfx);
 		countdown3.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(countdown2Sfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(countdown2Sfx);
 		countdown3.gameObject.SetActive(false);
 		countdown2.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(countdown1Sfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(countdown1Sfx);
 		countdown2.gameObject.SetActive(false);
 		countdown1.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleSfx(countdownFightSfx);
+		SoundManager.instance.PlaySingleBacgroundSfx(countdownFightSfx);
 		countdown1.gameObject.SetActive(false);
 		countdownFight.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.0f);

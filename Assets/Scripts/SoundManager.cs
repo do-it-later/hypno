@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
 {
 	#region Fields / Properties
 	public AudioSource sfxSource;
+	public AudioSource backgroundSfxSource;
 	public AudioSource musicSource;
 	public static SoundManager instance = null;
 	#endregion
@@ -27,6 +28,13 @@ public class SoundManager : MonoBehaviour
 		sfxSource.clip = clip;
 		sfxSource.loop = false;
 		sfxSource.Play();
+	}
+
+	public void PlaySingleBacgroundSfx(AudioClip clip)
+	{
+		backgroundSfxSource.clip = clip;
+		backgroundSfxSource.loop = false;
+		backgroundSfxSource.Play();
 	}
 
 	public void PlayLoopedSfx(AudioClip clip)

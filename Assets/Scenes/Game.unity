@@ -557,7 +557,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1070966350}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &186487686
 GameObject:
@@ -824,6 +824,8 @@ MonoBehaviour:
   yellow: {fileID: 21300000, guid: a277f5bde1d7240b99f53e3ccb06b007, type: 3}
   red: {fileID: 21300000, guid: a0acca7af989d49aeb76e051873d3be2, type: 3}
   armed: {fileID: 21300000, guid: 9470ca14a38324477a468d575e934cf2, type: 3}
+  beepSfx: {fileID: 8300000, guid: 7072e88cca5fd4e009fd94ad4ce9322a, type: 3}
+  activateSfx: {fileID: 8300000, guid: a123eb7bfd3c64f2295843526f455c49, type: 3}
 --- !u!212 &422421316
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1155,6 +1157,115 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 591356931}
+--- !u!1 &623567887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 623567889}
+  - component: {fileID: 623567888}
+  m_Layer: 0
+  m_Name: Background Sfx Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &623567888
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 623567887}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!4 &623567889
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 623567887}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1070966350}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &659042697
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,6 +1574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxSource: {fileID: 1438743538}
+  backgroundSfxSource: {fileID: 623567888}
   musicSource: {fileID: 119627341}
 --- !u!4 &1070966350
 Transform:
@@ -1475,6 +1587,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1438743539}
+  - {fileID: 623567889}
   - {fileID: 119627342}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -3156,6 +3269,10 @@ MonoBehaviour:
   countdown2: {fileID: 1565285812}
   countdown1: {fileID: 1801983496}
   countdownFight: {fileID: 1297066262}
+  countdown3Sfx: {fileID: 8300000, guid: cc58c16e7f23648e69d556e9e4e9208a, type: 3}
+  countdown2Sfx: {fileID: 8300000, guid: c88cac92c02b24814892ecc2fa1a8a29, type: 3}
+  countdown1Sfx: {fileID: 8300000, guid: a32c4dd82c8ed42a0bc0ba269c567840, type: 3}
+  countdownFightSfx: {fileID: 8300000, guid: befd2f9525c674baebca290883525918, type: 3}
 --- !u!4 &1890186322
 Transform:
   m_ObjectHideFlags: 0
