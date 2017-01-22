@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private float dodgeCooldown;
 	private float lastDodgeTime;
+	private float currentDodgeCooldown;
 	
 	[SerializeField, HeaderAttribute("Energy")]
 	private float maximumEnergy = 100;
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
 
 	[SerializeField, HeaderAttribute("Shot")]
 	private Color shotColor;
+	public Color ShotColor { get { return shotColor; } }
 	[SerializeField]
 	private float shotCooldown;
 	[SerializeField]
@@ -129,17 +131,18 @@ public class Player : MonoBehaviour
 		if(roundManager.State == RoundManager.STATE.PLAYING)
 		{
 			ChargeEnergy(Time.deltaTime * passiveEnergyPerSec);
+			ReduceDodgeCooldown();
 			direction = cim.GetLeftDirections();
 
 			if(isPossessingOpponent)
 			{
-				shield.SetActive(false);
+				ToggleShields(false);
 				return;
 			}
 
-			if (!cim.IsLeftStickIdle())
+			if (!cim.IsRightStickIdle())
 			{
-				shootAngle = cim.GetLeftAngle();
+				shootAngle = cim.GetRightAngle();
 			}
 
 			if(!shield.activeInHierarchy)
@@ -201,7 +204,7 @@ public class Player : MonoBehaviour
 				Move();
 				ChargeResistance(Time.deltaTime * 30);
 				sr.color = opponentPlayer.GetComponent<SpriteRenderer>().color;
-				shield.SetActive(false);
+				ToggleShields(false);
 			} 
 			else 
 			{
@@ -211,7 +214,7 @@ public class Player : MonoBehaviour
 				{
 					Shoot();
 					isCharging = false;
-					shield.SetActive(false);
+					ToggleShields(false);
 				}
 				else if(cim.GetLeftTrigger() > 0)
 				{
@@ -220,7 +223,7 @@ public class Player : MonoBehaviour
 				}
 				else
 				{
-					shield.SetActive(false);
+					ToggleShields(false);
 					isShieldTriggered = false;
 					isShieldAllowed = true;
 				}
@@ -262,7 +265,7 @@ public class Player : MonoBehaviour
 
 	private void Dodge()
 	{
-		if(Time.time - lastDodgeTime > dodgeCooldown && IsMoving())
+		if(currentDodgeCooldown <= 0 && IsMoving())
 		{
 			SoundManager.instance.PlaySingleSfx(teleportSfx);
 
@@ -272,7 +275,7 @@ public class Player : MonoBehaviour
 			position.y += dir.y * dodgeDistance;
 			transform.position = position;
 
-			lastDodgeTime = Time.time;
+			currentDodgeCooldown = dodgeCooldown;
 		}
 	}
 
@@ -292,6 +295,7 @@ public class Player : MonoBehaviour
 			shot.direction = new Vector2(x, y).normalized;
 			shot.damage = normalShotPower * baseDamage;
 			shot.target = opponent;
+			shot.shooter = gameObject;
 			shot.transform.eulerAngles = new Vector3(0, 0, shootAngle);
 			go.GetComponent<SpriteRenderer>().color = shotColor;
 
@@ -306,7 +310,7 @@ public class Player : MonoBehaviour
 	{
 		if(shield.activeInHierarchy && isShieldAllowed)
 		{
-			if(energy >= minimumReflectorEnergyReq - reflectorMaintenanceCost)
+			if(energy >= 0)
 			{
 				ReduceEnergy(reflectorMaintenanceCost * Time.deltaTime);
 			} else {
@@ -315,13 +319,21 @@ public class Player : MonoBehaviour
 		}
 		else if(energy >= minimumReflectorEnergyReq && !isShieldTriggered)
 		{
-			shield.SetActive(true);
+			ToggleShields(true);
 
 			ReduceEnergy(initialReflectorCost);
 
 			isShieldTriggered = true;
 		} else {
-			shield.SetActive(false);
+			ToggleShields(false);
+		}
+	}
+
+	private void ReduceDodgeCooldown()
+	{
+		if(currentDodgeCooldown > 0)
+		{
+			currentDodgeCooldown -= Time.deltaTime;
 		}
 	}
 
@@ -389,6 +401,12 @@ public class Player : MonoBehaviour
 		resistanceChanged.Invoke(resistance);
 	}
 
+	private void ToggleShields(bool on)
+	{
+		shield.SetActive(on);
+		GetComponent<BoxCollider2D>().enabled = !on;
+	}
+
 	private bool IsMoving()
 	{
 		return !direction.x.Equals(0) || !direction.y.Equals(0);
@@ -428,10 +446,5 @@ public class Player : MonoBehaviour
 	{
 		shotsHit++;
 		ModifyAccuracy();
-	}
-
-	public void AbsorbEnergy()
-	{
-		ChargeEnergy(33);
 	}
 }
