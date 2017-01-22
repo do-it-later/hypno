@@ -54,12 +54,12 @@ public class RoundManager : MonoBehaviour {
 
 	void Update() {
 		var playersAlive = 0;
-        var winner = "";
+        var winner = players[0];
 		players.ForEach(p => {
 			if(p.activeInHierarchy)
             {
                 playersAlive++;
-                winner = p.name;
+                winner = p;
             } 
 		});
 
@@ -70,12 +70,15 @@ public class RoundManager : MonoBehaviour {
 		if(state == STATE.END)
 		{
             gameOverDialog.SetActive(true);
-            if(playersAlive == 0)
-            	gameOverScript.updateVictoryText("It's a tie!");
-            else
-            	gameOverScript.updateVictoryText( winner + " wins!");
             var p1 = players[0].GetComponent<Player>();
             var p2 = players[1].GetComponent<Player>();
+            gameOverScript.UpdatePlayerNames(p1.PlayerName, p2.PlayerName);
+            gameOverScript.updatePlayerNameColors(players[0].GetComponent<SpriteRenderer>().color, players[1].GetComponent<SpriteRenderer>().color);
+            if(playersAlive == 0)
+            	gameOverScript.updateVictoryText("It's a tie!", Color.white);
+            else
+            	gameOverScript.updateVictoryText( winner.GetComponent<Player>().PlayerName + " wins!", winner.GetComponent<SpriteRenderer>().color);
+            
             gameOverScript.updatePlayerAccuracy(p1.GetAccuracy(), p2.GetAccuracy());
 
 			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.START)))

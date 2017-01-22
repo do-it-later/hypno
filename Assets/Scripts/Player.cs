@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 	private RoundManager roundManager;
     [SerializeField]
     private string name;
-    public string Name { get { return name; } }
+    public string PlayerName { get { return name; } }
 	[SerializeField]
 	private GameObject opponent;
 	private Player opponentPlayer;
