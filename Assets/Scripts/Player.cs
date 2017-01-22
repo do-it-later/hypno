@@ -32,8 +32,8 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private RoundManager roundManager;
     [SerializeField]
-    private string name;
-    public string PlayerName { get { return name; } }
+    private string playerName;
+    public string PlayerName { get { return playerName; } }
 	[SerializeField]
 	private GameObject opponent;
 	private Player opponentPlayer;
@@ -87,6 +87,10 @@ public class Player : MonoBehaviour
 	private Vector3 initialPosition;
 	private int shotsFired;
 	private int shotsHit;
+	private float shieldsUpTime = 0;
+	public float ShieldsUpTime { get { return shieldsUpTime; } }
+	private int shotsReflected = 0;
+	public int ShotsReflected { get { return shotsReflected; } }
 
 	[SerializeField, HeaderAttribute("Reflector")]
 	private int initialReflectorCost;
@@ -332,6 +336,7 @@ public class Player : MonoBehaviour
 			if(energy >= 0)
 			{
 				ReduceEnergy(reflectorMaintenanceCost * Time.deltaTime);
+				shieldsUpTime += Time.deltaTime;
 			} else {
 				isShieldAllowed = false;
 			}
@@ -339,10 +344,9 @@ public class Player : MonoBehaviour
 		else if(energy >= minimumReflectorEnergyReq && !isShieldTriggered)
 		{
 			ToggleShields(true);
-
 			ReduceEnergy(initialReflectorCost);
-
 			isShieldTriggered = true;
+			shieldsUpTime += Time.deltaTime;
 		} else {
 			ToggleShields(false);
 		}
@@ -467,6 +471,8 @@ public class Player : MonoBehaviour
 		resistanceChanged.Invoke(resistance);
 		energyChanged.Invoke(energy);
 		sr.color = originalColor;
+		shieldsUpTime = 0;
+		shotsReflected = 0;
 	}
 
 	public void OpponentShotHit()
@@ -478,5 +484,10 @@ public class Player : MonoBehaviour
 	{
 		shotsHit++;
 		ModifyAccuracy();
+	}
+
+	public void ReflectShot()
+	{
+		shotsReflected++;
 	}
 }

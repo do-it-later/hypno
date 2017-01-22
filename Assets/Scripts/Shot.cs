@@ -38,6 +38,7 @@ public class Shot : MonoBehaviour
 		if(collider.tag == "Shield")
 		{
 			direction = new Vector2(-direction.x, -direction.y);
+			target.GetComponent<Player>().ReflectShot();
 			GameObject newTarget = shooter;
 			shooter = target;
 			target = newTarget;

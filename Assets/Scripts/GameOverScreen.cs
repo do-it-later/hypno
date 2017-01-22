@@ -7,6 +7,10 @@ public class GameOverScreen : MonoBehaviour {
     public Text victoryText;
     public Text p1Accuracy;
     public Text p2Accuracy;
+    public Text p1Shield;
+    public Text p2Shield;
+    public Text p1Reflect;
+    public Text p2Reflect;
     public Text p1Name;
     public Text p2Name;
 
@@ -26,6 +30,18 @@ public class GameOverScreen : MonoBehaviour {
     {
         p1Accuracy.text = accuracy1.ToString("P");
         p2Accuracy.text = accuracy2.ToString("P");
+    }
+
+    public void updatePlayerReflected(int reflect1, int reflect2)
+    {
+        p1Reflect.text = reflect1.ToString("P");
+        p2Reflect.text = reflect2.ToString("P");
+    }
+
+    public void updatePlayerShieldTime(float time1, float time2)
+    {
+        p1Shield.text = time1.ToString("0.00") + " s";
+        p2Shield.text = time2.ToString("0.00") + " s";
     }
 
     public void UpdatePlayerNames(string p1, string p2)
