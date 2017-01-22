@@ -44,6 +44,8 @@ public class Shot : MonoBehaviour
 			target = newTarget;
 			shooterPlayer = shooter.GetComponent<Player>();
 
+			transform.Rotate(new Vector3(0, 0, 180));
+
 			damage = Mathf.RoundToInt(damage * 1.1f);
 			movementSpeed = Mathf.RoundToInt(movementSpeed * 1.1f);
 		}

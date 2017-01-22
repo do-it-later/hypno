@@ -41,8 +41,6 @@ public class TeslaCoil : MonoBehaviour
 
 	void Update()
 	{
-		Debug.Log(state);
-		Debug.Log(Time.time - timeStarted);
 		if(state == State.IDLE && Time.time - timeStarted > 8.0f)
 		{
 			SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
