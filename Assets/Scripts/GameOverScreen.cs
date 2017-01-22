@@ -34,8 +34,8 @@ public class GameOverScreen : MonoBehaviour {
 
     public void updatePlayerReflected(int reflect1, int reflect2)
     {
-        p1Reflect.text = reflect1.ToString("P");
-        p2Reflect.text = reflect2.ToString("P");
+        p1Reflect.text = reflect1.ToString();
+        p2Reflect.text = reflect2.ToString();
     }
 
     public void updatePlayerShieldTime(float time1, float time2)
