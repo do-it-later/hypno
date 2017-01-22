@@ -484,6 +484,7 @@ public class Player : MonoBehaviour
 	{
 		shotsHit++;
 		ModifyAccuracy();
+		SoundManager.instance.PlaySingleSfx(gotHitSfx);
 	}
 
 	public void ReflectShot()
