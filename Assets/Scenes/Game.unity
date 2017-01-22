@@ -366,6 +366,8 @@ MonoBehaviour:
   gotHitSfx: {fileID: 8300000, guid: 149f3a34e87564d11a648e8462ad0e0d, type: 3}
   teleportSfx: {fileID: 8300000, guid: e43014c4b993744f58d02b060aa9d9f2, type: 3}
   hoverSfx: {fileID: 8300000, guid: 8a32878d2ec7f4491b2e2d80b33e3fd0, type: 3}
+  stalemateSfx: {fileID: 8300000, guid: 0e4e464626296403eb80be8a4a8b7163, type: 3}
+  refreshSfx: {fileID: 8300000, guid: d263a9a3a096f42df8fc48ca8be3de5d, type: 3}
 --- !u!61 &104298969
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2760,6 +2762,8 @@ MonoBehaviour:
   gotHitSfx: {fileID: 8300000, guid: 149f3a34e87564d11a648e8462ad0e0d, type: 3}
   teleportSfx: {fileID: 8300000, guid: e43014c4b993744f58d02b060aa9d9f2, type: 3}
   hoverSfx: {fileID: 8300000, guid: 8a32878d2ec7f4491b2e2d80b33e3fd0, type: 3}
+  stalemateSfx: {fileID: 8300000, guid: 0e4e464626296403eb80be8a4a8b7163, type: 3}
+  refreshSfx: {fileID: 8300000, guid: d263a9a3a096f42df8fc48ca8be3de5d, type: 3}
 --- !u!61 &1684553043
 BoxCollider2D:
   m_ObjectHideFlags: 0
