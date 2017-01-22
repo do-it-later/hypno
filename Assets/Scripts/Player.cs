@@ -6,12 +6,14 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-	[Serializable]
-	public class EnergyChangeEvent : UnityEvent<float> { }
-	[Serializable]
-	public class ResistanceChangeEvent : UnityEvent<float> { }
-	[Serializable]
-	public class AccuracyChangeEvent : UnityEvent<float> { }
+    [Serializable]
+    public class EnergyChangeEvent : UnityEvent<float> { }
+    [Serializable]
+    public class ResistanceChangeEvent : UnityEvent<float> { }
+    [Serializable]
+    public class AccuracyChangeEvent : UnityEvent<float> { }
+    [Serializable]
+    public class DodgeCooldownEvent : UnityEvent<float> { }
 
 	[SerializeField]
 	private EnergyChangeEvent energyChanged = new EnergyChangeEvent();
@@ -19,13 +21,17 @@ public class Player : MonoBehaviour
 	private ResistanceChangeEvent resistanceChanged = new ResistanceChangeEvent();
 	[SerializeField]
 	private AccuracyChangeEvent accuracyChanged = new AccuracyChangeEvent();
+    [SerializeField]
+    private DodgeCooldownEvent dodgeCooldownChanged = new DodgeCooldownEvent();
 	public GameObject smallShotPrefab;
 	public GameObject longShotPrefab;
 	[SerializeField]
 	private GameObject shield;
 	[SerializeField]
 	private RoundManager roundManager;
-
+    [SerializeField]
+    private string name;
+    public string Name { get { return name; } }
 	[SerializeField]
 	private GameObject opponent;
 	private Player opponentPlayer;
@@ -77,8 +83,8 @@ public class Player : MonoBehaviour
 	private bool isShieldTriggered = false;
 	private bool isShieldAllowed = true;
 	private Vector3 initialPosition;
-	private int shotsFired;
-	private int shotsHit;
+	public int shotsFired;
+	public int shotsHit;
 
 	[SerializeField, HeaderAttribute("Reflector")]
 	private int initialReflectorCost;
@@ -336,6 +342,7 @@ public class Player : MonoBehaviour
 		if(currentDodgeCooldown > 0)
 		{
 			currentDodgeCooldown -= Time.deltaTime;
+            dodgeCooldownChanged.Invoke(currentDodgeCooldown / dodgeCooldown);
 		}
 	}
 

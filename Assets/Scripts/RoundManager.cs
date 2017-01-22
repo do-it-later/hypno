@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour {
 
+    public GameObject gameOverDialog;
+    public GameOverScreen gameOverScript;
+
 	public enum STATE {
 		START,
 		PLAYING,
@@ -50,9 +53,13 @@ public class RoundManager : MonoBehaviour {
 
 	void Update() {
 		var playersAlive = 0;
+        var winner = "";
 		players.ForEach(p => {
-			if(p.activeInHierarchy) 
-				playersAlive++;
+			if(p.activeInHierarchy)
+            {
+                playersAlive++;
+                winner = p.name;
+            } 
 		});
 
 		if(playersAlive < players.Count) {
@@ -61,6 +68,20 @@ public class RoundManager : MonoBehaviour {
 
 		if(state == STATE.END)
 		{
+            gameOverDialog.SetActive(true);
+            gameOverScript.updateVictoryText(winner+" wins!");
+            var p1 = players[0].GetComponent<Player>();
+            var p2 = players[1].GetComponent<Player>();
+            if (p1.shotsHit > 0)
+            {
+                gameOverScript.updatePlayerAccuracy(1, p1.shotsFired / p1.shotsHit);
+            }
+
+            if (p2.shotsHit > 0)
+            {
+                gameOverScript.updatePlayerAccuracy(2, p2.shotsFired / p2.shotsHit);
+            }
+
 			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.START)))
 			{
 				RestartGame();
@@ -79,6 +100,7 @@ public class RoundManager : MonoBehaviour {
 		state = STATE.START;
 
 		StartCoroutine(Countdown());
+        gameOverDialog.SetActive(false);
 	}
 
 	IEnumerator Countdown()
