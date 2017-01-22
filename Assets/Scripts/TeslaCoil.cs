@@ -21,34 +21,58 @@ public class TeslaCoil : MonoBehaviour
 	private AudioClip activateSfx;
 
 	private SpriteRenderer spriteRenderer;
+	private float timeStarted;
+	private enum State {
+		IDLE,
+		GREEN,
+		YELLOW,
+		RED,
+		ARMED
+	}
+	private State state;
 
 	void Start()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
-
-		StartCoroutine(StartCoil());
+		
+		timeStarted = Time.time;
+		state = State.IDLE;
 	}
 
-	IEnumerator StartCoil()
+	void Update()
 	{
-		yield return new WaitForSeconds(8.0f);
-		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
-		spriteRenderer.sprite = green;
-		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
-		spriteRenderer.sprite = yellow;
-		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
-		spriteRenderer.sprite = red;
-		yield return new WaitForSeconds(1.0f);
-		SoundManager.instance.PlaySingleBacgroundSfx(activateSfx);
-		spriteRenderer.sprite = armed;
+		Debug.Log(state);
+		Debug.Log(Time.time - timeStarted);
+		if(state == State.IDLE && Time.time - timeStarted > 8.0f)
+		{
+			SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
+			spriteRenderer.sprite = green;
+			state = State.GREEN;
+		}
+		else if(state == State.GREEN && Time.time - timeStarted > 9.0f)
+		{
+			SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
+			spriteRenderer.sprite = yellow;
+			state = State.YELLOW;
+		}
+		else if(state == State.YELLOW && Time.time - timeStarted > 10.0f)
+		{
+			SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
+			spriteRenderer.sprite = red;
+			state = State.RED;
+		}
+		else if(state == State.RED && Time.time - timeStarted > 11.0f)
+		{
+			SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
+			spriteRenderer.sprite = armed;
+			state = State.ARMED;
+		}
 	}
 
 	public void Restart()
 	{
 		spriteRenderer.sprite = idle;
-		StopCoroutine(StartCoil());
-		StartCoroutine(StartCoil());
+		state = State.IDLE;
+		timeStarted = Time.time;
 	}
 }
