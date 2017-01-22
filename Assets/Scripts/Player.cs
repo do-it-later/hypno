@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
 	public GameObject smallShotPrefab;
 	public GameObject longShotPrefab;
 	[SerializeField]
+	private GameObject teleportPrefab;
+	[SerializeField]
 	private GameObject shield;
 	[SerializeField]
 	private RoundManager roundManager;
@@ -276,6 +278,7 @@ public class Player : MonoBehaviour
 		if(currentDodgeCooldown <= 0 && IsMoving())
 		{
 			SoundManager.instance.PlaySingleSfx(teleportSfx);
+			StartCoroutine(PlayTeleport());
 
 			Vector2 position = transform.position;
 			var dir = direction.normalized;
@@ -285,6 +288,14 @@ public class Player : MonoBehaviour
 
 			currentDodgeCooldown = dodgeCooldown;
 		}
+	}
+
+	IEnumerator PlayTeleport()
+	{
+		GameObject go = Instantiate(teleportPrefab, transform.position, Quaternion.identity);
+		go.GetComponent<SpriteRenderer>().color = originalColor;
+		yield return new WaitForSeconds(0.1f);
+		Destroy(go);
 	}
 
 	private void Shoot()
