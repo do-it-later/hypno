@@ -12,11 +12,6 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField]
     private ControllerInputManager cim2;
 
-	void Start()
-	{
-		controllerInputManager = GetComponent<ControllerInputManager>();
-	}
-
 	void Update()
 	{
 		if(mainMenuPage.activeSelf)
