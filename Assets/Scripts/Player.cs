@@ -83,8 +83,8 @@ public class Player : MonoBehaviour
 	private bool isShieldTriggered = false;
 	private bool isShieldAllowed = true;
 	private Vector3 initialPosition;
-	public int shotsFired;
-	public int shotsHit;
+	private int shotsFired;
+	private int shotsHit;
 
 	[SerializeField, HeaderAttribute("Reflector")]
 	private int initialReflectorCost;
@@ -428,9 +428,19 @@ public class Player : MonoBehaviour
 		if(shotsFired > 0)
 			accuracyChanged.Invoke(shotsHit / (float)shotsFired);
 		else if(shotsHit > 0)
-			accuracyChanged.Invoke(100);
+			accuracyChanged.Invoke(1);
 		else
 			accuracyChanged.Invoke(0);
+	}
+
+	public float GetAccuracy()
+	{
+		if(shotsFired > 0)
+			return (shotsHit / (float)shotsFired);
+		else if(shotsHit > 0)
+			return 1;
+		else
+			return 0;
 	}
 
 	public void RestartCharacter()
