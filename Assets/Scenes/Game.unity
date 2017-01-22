@@ -3077,6 +3077,11 @@ Prefab:
       propertyPath: m_Name
       value: Blast Wave
       objectReference: {fileID: 0}
+    - target: {fileID: 114644885894442172, guid: 0ea7b29c761794c4ca8339a034b5c7ae,
+        type: 2}
+      propertyPath: roundManager
+      value: 
+      objectReference: {fileID: 1890186321}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ea7b29c761794c4ca8339a034b5c7ae, type: 2}
   m_IsPrefabParent: 0

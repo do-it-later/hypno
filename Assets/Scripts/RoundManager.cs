@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour {
 
@@ -91,6 +92,15 @@ public class RoundManager : MonoBehaviour {
 			if(Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.START)))
 			{
 				RestartGame();
+			}
+
+			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.B)))
+			{
+				SceneManager.LoadScene("Main Menu");
+			}
+			if(Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.B)))
+			{
+				SceneManager.LoadScene("Main Menu");
 			}
 		}
 	}
