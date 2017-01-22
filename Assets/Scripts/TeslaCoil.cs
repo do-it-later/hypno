@@ -15,6 +15,11 @@ public class TeslaCoil : MonoBehaviour
 	[SerializeField]
 	private Sprite armed;
 
+	[SerializeField]
+	private AudioClip beepSfx;
+	[SerializeField]
+	private AudioClip activateSfx;
+
 	private SpriteRenderer spriteRenderer;
 
 	void Start()
@@ -27,12 +32,16 @@ public class TeslaCoil : MonoBehaviour
 	IEnumerator StartCoil()
 	{
 		yield return new WaitForSeconds(8.0f);
+		SoundManager.instance.PlaySingleSfx(beepSfx);
 		spriteRenderer.sprite = green;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(beepSfx);
 		spriteRenderer.sprite = yellow;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(beepSfx);
 		spriteRenderer.sprite = red;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleSfx(activateSfx);
 		spriteRenderer.sprite = armed;
 	}
 
