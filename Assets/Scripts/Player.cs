@@ -106,6 +106,8 @@ public class Player : MonoBehaviour
 	private AudioClip teleportSfx;
 	[SerializeField]
 	private AudioClip hoverSfx;
+	[SerializeField]
+	private AudioClip stalemateSfx;
 
 	private ControllerInputManager cim;
 	private SpriteRenderer sr;
@@ -366,6 +368,8 @@ public class Player : MonoBehaviour
 
 	public void ResetWhenDoublePossessed()
 	{
+		SoundManager.instance.PlaySingleBacgroundSfx(stalemateSfx);
+
 		resistance = 100;
 		damage = Mathf.CeilToInt(damage * 1.5f);
 		isPossessed = false;

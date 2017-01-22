@@ -5,6 +5,8 @@ using UnityEngine;
 public class TeslaCoil : MonoBehaviour
 {
 	[SerializeField]
+	private Sprite idle;
+	[SerializeField]
 	private Sprite green;
 	[SerializeField]
 	private Sprite yellow;
@@ -12,6 +14,11 @@ public class TeslaCoil : MonoBehaviour
 	private Sprite red;
 	[SerializeField]
 	private Sprite armed;
+
+	[SerializeField]
+	private AudioClip beepSfx;
+	[SerializeField]
+	private AudioClip activateSfx;
 
 	private SpriteRenderer spriteRenderer;
 
@@ -25,12 +32,22 @@ public class TeslaCoil : MonoBehaviour
 	IEnumerator StartCoil()
 	{
 		yield return new WaitForSeconds(8.0f);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = green;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = yellow;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleBacgroundSfx(beepSfx);
 		spriteRenderer.sprite = red;
 		yield return new WaitForSeconds(1.0f);
+		SoundManager.instance.PlaySingleBacgroundSfx(activateSfx);
 		spriteRenderer.sprite = armed;
+	}
+
+	public void Restart()
+	{
+		spriteRenderer.sprite = idle;
+		StartCoroutine(StartCoil());
 	}
 }
