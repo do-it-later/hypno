@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private float dodgeCooldown;
 	private float lastDodgeTime;
+	private float currentDodgeCooldown;
 	
 	[SerializeField, HeaderAttribute("Energy")]
 	private float maximumEnergy = 100;
@@ -130,6 +131,7 @@ public class Player : MonoBehaviour
 		if(roundManager.State == RoundManager.STATE.PLAYING)
 		{
 			ChargeEnergy(Time.deltaTime * passiveEnergyPerSec);
+			ReduceDodgeCooldown();
 			direction = cim.GetLeftDirections();
 
 			if(isPossessingOpponent)
@@ -138,9 +140,9 @@ public class Player : MonoBehaviour
 				return;
 			}
 
-			if (!cim.IsLeftStickIdle())
+			if (!cim.IsRightStickIdle())
 			{
-				shootAngle = cim.GetLeftAngle();
+				shootAngle = cim.GetRightAngle();
 			}
 
 			if(!shield.activeInHierarchy)
@@ -263,7 +265,7 @@ public class Player : MonoBehaviour
 
 	private void Dodge()
 	{
-		if(Time.time - lastDodgeTime > dodgeCooldown && IsMoving())
+		if(currentDodgeCooldown <= 0 && IsMoving())
 		{
 			SoundManager.instance.PlaySingleSfx(teleportSfx);
 
@@ -273,7 +275,7 @@ public class Player : MonoBehaviour
 			position.y += dir.y * dodgeDistance;
 			transform.position = position;
 
-			lastDodgeTime = Time.time;
+			currentDodgeCooldown = dodgeCooldown;
 		}
 	}
 
@@ -324,6 +326,14 @@ public class Player : MonoBehaviour
 			isShieldTriggered = true;
 		} else {
 			ToggleShields(false);
+		}
+	}
+
+	private void ReduceDodgeCooldown()
+	{
+		if(currentDodgeCooldown > 0)
+		{
+			currentDodgeCooldown -= Time.deltaTime;
 		}
 	}
 
