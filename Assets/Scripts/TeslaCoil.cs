@@ -5,6 +5,8 @@ using UnityEngine;
 public class TeslaCoil : MonoBehaviour
 {
 	[SerializeField]
+	private Sprite idle;
+	[SerializeField]
 	private Sprite green;
 	[SerializeField]
 	private Sprite yellow;
@@ -32,5 +34,11 @@ public class TeslaCoil : MonoBehaviour
 		spriteRenderer.sprite = red;
 		yield return new WaitForSeconds(1.0f);
 		spriteRenderer.sprite = armed;
+	}
+
+	public void Restart()
+	{
+		spriteRenderer.sprite = idle;
+		StartCoroutine(StartCoil());
 	}
 }
