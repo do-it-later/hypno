@@ -94,11 +94,11 @@ public class RoundManager : MonoBehaviour {
 				RestartGame();
 			}
 
-			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.B)))
+			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.SELECT)))
 			{
 				SceneManager.LoadScene("Main Menu");
 			}
-			if(Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.B)))
+			if(Input.GetKeyDown(cim2.GetButtonString(ControllerInputManager.Button.SELECT)))
 			{
 				SceneManager.LoadScene("Main Menu");
 			}
