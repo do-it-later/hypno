@@ -11,5 +11,11 @@ public class Foot : MonoBehaviour {
 			transform.parent.gameObject.SetActive(false);
 		}
 	}
-
+	void OnColissionEnter2D(Collision2D collision)
+	{
+		if(collision.gameObject.tag == "Hole")
+		{
+			transform.parent.gameObject.SetActive(false);
+		}
+	}
 }
