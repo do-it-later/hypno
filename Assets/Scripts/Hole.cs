@@ -17,6 +17,8 @@ public class Hole : MonoBehaviour
 
 	private float creationTime;
 
+	[SerializeField]
+	private RoundManager roundManager;
 
 	void Start()
 	{
@@ -25,19 +27,22 @@ public class Hole : MonoBehaviour
 
 	void Update()
 	{
-		Vector2 scale = this.transform.localScale;
-		float currentTime = Time.time;
-
-		if(currentTime - creationTime > settings.delay && scale.x < settings.maxSize.x)
+		if(roundManager.State == RoundManager.STATE.PLAYING)
 		{
-			scale.x += settings.growthSpeed.x * Time.deltaTime;
-		}
-		if(currentTime - creationTime > settings.delay && scale.y < settings.maxSize.y)
-		{
-			scale.y += settings.growthSpeed.y * Time.deltaTime;
-		}
+			Vector2 scale = this.transform.localScale;
+			float currentTime = Time.time;
 
-		this.transform.localScale = scale;
+			if(currentTime - creationTime > settings.delay && scale.x < settings.maxSize.x)
+			{
+				scale.x += settings.growthSpeed.x * Time.deltaTime;
+			}
+			if(currentTime - creationTime > settings.delay && scale.y < settings.maxSize.y)
+			{
+				scale.y += settings.growthSpeed.y * Time.deltaTime;
+			}
+
+			this.transform.localScale = scale;
+		}
 	}
 
 	public void RestartHole()
