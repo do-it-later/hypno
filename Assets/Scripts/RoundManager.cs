@@ -81,6 +81,8 @@ public class RoundManager : MonoBehaviour {
             	gameOverScript.updateVictoryText( winner.GetComponent<Player>().PlayerName + " wins!", winner.GetComponent<SpriteRenderer>().color);
             
             gameOverScript.updatePlayerAccuracy(p1.GetAccuracy(), p2.GetAccuracy());
+            gameOverScript.updatePlayerReflected(p1.ShotsReflected, p2.ShotsReflected);
+            gameOverScript.updatePlayerShieldTime(p1.ShieldsUpTime, p2.ShieldsUpTime);
 
 			if(Input.GetKeyDown(cim1.GetButtonString(ControllerInputManager.Button.START)))
 			{
