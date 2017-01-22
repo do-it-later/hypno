@@ -340,6 +340,8 @@ MonoBehaviour:
     type: 2}
   longShotPrefab: {fileID: 1816993995732200, guid: de2abc8aeb9874f9ea395413d2b8c824,
     type: 2}
+  teleportPrefab: {fileID: 1071353466834004, guid: 036d16098401241f1a24c06ece0b54fc,
+    type: 2}
   shield: {fileID: 186487686}
   roundManager: {fileID: 1890186321}
   name: Red
@@ -3173,6 +3175,8 @@ MonoBehaviour:
   smallShotPrefab: {fileID: 1886314114863234, guid: 51dc19892ca4e4cdab8896d37eec3d6c,
     type: 2}
   longShotPrefab: {fileID: 1816993995732200, guid: de2abc8aeb9874f9ea395413d2b8c824,
+    type: 2}
+  teleportPrefab: {fileID: 1071353466834004, guid: 036d16098401241f1a24c06ece0b54fc,
     type: 2}
   shield: {fileID: 289722606}
   roundManager: {fileID: 1890186321}
