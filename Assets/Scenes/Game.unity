@@ -347,7 +347,7 @@ MonoBehaviour:
   chargeEnergyPerSec: 75
   timeBeforeEnergyCharge: 0.33
   maximumResistance: 100
-  shotColor: {r: 1, g: 0.30882353, b: 0.30882353, a: 1}
+  shotColor: {r: 0.6397059, g: 0.018814897, b: 0.28825793, a: 1}
   shotCooldown: 0.33
   normalShotPower: 1
   normalShotEnergy: 10
@@ -2537,7 +2537,7 @@ MonoBehaviour:
   chargeEnergyPerSec: 75
   timeBeforeEnergyCharge: 0.33
   maximumResistance: 100
-  shotColor: {r: 0, g: 0.26090252, b: 0.50689656, a: 1}
+  shotColor: {r: 0.42699176, g: 0.08855971, b: 0.5735294, a: 1}
   shotCooldown: 0.33
   normalShotPower: 1
   normalShotEnergy: 10
