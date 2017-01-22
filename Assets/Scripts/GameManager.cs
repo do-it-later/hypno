@@ -68,4 +68,9 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(gameBuildupMusic.length);
 		SoundManager.instance.PlayLoopedMusic(gameEndingLoopMusic);
 	}
+
+	public void RestartMusic()
+	{
+		StartCoroutine(PlayGameMusic());
+	}
 }
